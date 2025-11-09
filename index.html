@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Все предыдущие стили остаются без изменений */
+        /* Все стили остаются без изменений */
         :root {
             --primary-blue: #002bbb;
             --secondary-blue: #0026ae;
@@ -1195,6 +1195,7 @@
                         <!-- Результаты будут здесь -->
                     </div>
                     <button class="export-btn" id="exportResults">Экспорт данных в JSON</button>
+                    <button class="export-btn" id="forceSyncBtn" style="background: var(--accent-blue); margin-left: 10px;">Принудительная синхронизация</button>
                 </div>
                 
                 <div class="admin-section">
@@ -1309,9 +1310,8 @@
 
     <script>
         // ========== КОНФИГУРАЦИЯ ОБЛАЧНОГО ХРАНИЛИЩА ==========
-        // Мы будем использовать JSONBin.io как облачное хранилище
-        const JSONBIN_API_KEY = '$2a$10$ZzqGSk9XmuCwrk6P2I0NNOjjfT/hS0tnyod4TaKGfz8pGZ/BIgHzO'; // Бесплатный ключ для демо
-        const JSONBIN_BIN_ID = '6910cb5bae596e708f4e9a29'; // Нужно заменить на реальный ID после создания
+        const JSONBIN_API_KEY = '$2a$10$ZzqGSk9XmuCwrk6P2I0NNOjjfT/hS0tnyod4TaKGfz8pGZ/BIgHzO';
+        const JSONBIN_BIN_ID = '6910cb5bae596e708f4e9a29';
         
         // Конфигурация приложения
         const ALLOWED_NICKNAMES = {
@@ -1366,6 +1366,8 @@
 
             async saveData(data) {
                 try {
+                    console.log('Сохранение данных в облако:', data);
+                    
                     // Сохраняем в локальное хранилище как резервную копию
                     localStorage.setItem('flare_data_backup', JSON.stringify(data));
                     localStorage.setItem('flare_last_sync', new Date().toISOString());
@@ -1383,11 +1385,13 @@
                         });
                         
                         if (response.ok) {
+                            const result = await response.json();
                             this.lastSync = new Date();
                             this.updateSyncStatus('Данные синхронизированы с облаком', 'sync-success');
+                            console.log('Успешно сохранено в облако:', result);
                             return true;
                         } else {
-                            throw new Error('Cloud save failed');
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
                     }
                     
@@ -1396,7 +1400,7 @@
                     console.error('Ошибка сохранения в облако:', error);
                     this.isOnline = false;
                     this.updateSyncStatus('Работа в оффлайн-режиме. Данные сохранены локально.', 'sync-error');
-                    return false; // Но данные всё равно сохранены локально
+                    return false;
                 }
             }
 
@@ -1415,13 +1419,25 @@
                             this.lastSync = new Date();
                             this.updateSyncStatus('Данные загружены из облака', 'sync-success');
                             
+                            console.log('Данные из облака:', result.record);
+                            
                             // Сохраняем полученные данные в локальное хранилище
-                            localStorage.setItem('flare_data_backup', JSON.stringify(result.record));
-                            localStorage.setItem('flare_last_sync', this.lastSync.toISOString());
+                            if (result.record) {
+                                // Обновляем локальные данные из облака
+                                if (result.record.users) {
+                                    localStorage.setItem('flare_users', JSON.stringify(result.record.users));
+                                }
+                                if (result.record.votes) {
+                                    localStorage.setItem('flare_votes', JSON.stringify(result.record.votes));
+                                }
+                                if (result.record.reports) {
+                                    localStorage.setItem('flare_reports', JSON.stringify(result.record.reports));
+                                }
+                            }
                             
                             return result.record;
                         } else {
-                            throw new Error('Cloud load failed');
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
                     }
                 } catch (error) {
@@ -1442,7 +1458,7 @@
 
             getDefaultData() {
                 return {
-                    users: {},
+                    users: [],
                     votes: [],
                     reports: [],
                     created: new Date().toISOString()
@@ -1466,6 +1482,22 @@
                 }
             }
 
+            // Получаем текущие данные из localStorage
+            getCurrentLocalData() {
+                const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
+                const votes = JSON.parse(localStorage.getItem('flare_votes') || '[]');
+                const reports = JSON.parse(localStorage.getItem('flare_reports') || '[]');
+                
+                console.log('Текущие локальные данные:', { users, votes, reports });
+                
+                return {
+                    users: users,
+                    votes: votes,
+                    reports: reports,
+                    lastUpdated: new Date().toISOString()
+                };
+            }
+
             // Периодическая синхронизация
             startAutoSync() {
                 setInterval(async () => {
@@ -1474,14 +1506,6 @@
                         await this.saveData(currentData);
                     }
                 }, 30000); // Синхронизация каждые 30 секунд
-            }
-
-            getCurrentLocalData() {
-                return {
-                    users: JSON.parse(localStorage.getItem('flare_users') || '{}'),
-                    votes: JSON.parse(localStorage.getItem('flare_votes') || '[]'),
-                    reports: JSON.parse(localStorage.getItem('flare_reports') || '[]')
-                };
             }
         }
 
@@ -1505,21 +1529,35 @@
         });
 
         async function loadApplicationData() {
-            const data = await cloudStorage.loadData();
+            console.log('Загрузка данных приложения...');
             
-            // Сохраняем данные в локальное хранилище для быстрого доступа
-            if (data.users) localStorage.setItem('flare_users', JSON.stringify(data.users));
-            if (data.votes) localStorage.setItem('flare_votes', JSON.stringify(data.votes));
-            if (data.reports) localStorage.setItem('flare_reports', JSON.stringify(data.reports));
+            try {
+                const data = await cloudStorage.loadData();
+                console.log('Данные загружены:', data);
+                
+                // Если данные из облака, обновляем локальное хранилище
+                if (data && data.users) {
+                    localStorage.setItem('flare_users', JSON.stringify(data.users));
+                }
+                if (data && data.votes) {
+                    localStorage.setItem('flare_votes', JSON.stringify(data.votes));
+                }
+                if (data && data.reports) {
+                    localStorage.setItem('flare_reports', JSON.stringify(data.reports));
+                }
+                
+                console.log('Локальные данные после загрузки:', {
+                    users: JSON.parse(localStorage.getItem('flare_users') || '[]'),
+                    votes: JSON.parse(localStorage.getItem('flare_votes') || '[]'),
+                    reports: JSON.parse(localStorage.getItem('flare_reports') || '[]')
+                });
+            } catch (error) {
+                console.error('Ошибка при загрузке данных:', error);
+            }
         }
 
         async function saveApplicationData() {
-            const data = {
-                users: JSON.parse(localStorage.getItem('flare_users') || '{}'),
-                votes: JSON.parse(localStorage.getItem('flare_votes') || '[]'),
-                reports: JSON.parse(localStorage.getItem('flare_reports') || '[]')
-            };
-            
+            const data = cloudStorage.getCurrentLocalData();
             return await cloudStorage.saveData(data);
         }
 
@@ -1594,7 +1632,7 @@
             // Кнопка входа
             document.getElementById('loginBtn').addEventListener('click', async function() {
                 console.log('Кнопка входа нажата');
-                const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+                const username = document.getElementById('loginUsername').value.trim();
                 const password = document.getElementById('loginPassword').value;
                 
                 if (!username || !password) {
@@ -1603,10 +1641,15 @@
                 }
                 
                 // Проверяем существование пользователя
-                const users = JSON.parse(localStorage.getItem('flare_users') || '{}');
-                const mainNickname = getMainNickname(username);
+                const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
+                const mainNickname = getMainNickname(username.toLowerCase());
                 
-                if (users[mainNickname] && users[mainNickname].password === password) {
+                console.log('Поиск пользователя:', username, 'mainNickname:', mainNickname);
+                console.log('Все пользователи:', users);
+                
+                const user = users.find(u => u.mainNickname === mainNickname);
+                
+                if (user && user.password === password) {
                     // Успешный вход
                     localStorage.setItem('currentUser', username);
                     document.getElementById('authBtn').textContent = username;
@@ -1621,13 +1664,15 @@
                     document.getElementById('loginPassword').value = '';
                 } else {
                     alert('Неверный логин или пароль');
+                    console.log('Ошибка входа: пользователь не найден или пароль неверный');
+                    console.log('Найденный пользователь:', user);
                 }
             });
 
             // Кнопка регистрации
             document.getElementById('registerBtn').addEventListener('click', async function() {
                 console.log('Кнопка регистрации нажата');
-                const username = document.getElementById('registerUsername').value.trim().toLowerCase();
+                const username = document.getElementById('registerUsername').value.trim();
                 const password = document.getElementById('registerPassword').value;
                 const confirmPassword = document.getElementById('confirmPassword').value;
                 
@@ -1642,36 +1687,48 @@
                 }
                 
                 // Проверяем, разрешен ли никнейм
-                const mainNickname = getMainNickname(username);
+                const mainNickname = getMainNickname(username.toLowerCase());
                 if (!mainNickname) {
                     alert('Этот никнейм не зарегистрирован в системе. Пожалуйста, используйте ваш настоящий Discord никнейм.');
                     return;
                 }
                 
                 // Проверяем, не занят ли уже этот аккаунт
-                const users = JSON.parse(localStorage.getItem('flare_users') || '{}');
-                if (users[mainNickname]) {
+                const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
+                const existingUser = users.find(user => user.mainNickname === mainNickname);
+                if (existingUser) {
                     alert('Этот аккаунт уже зарегистрирован. Пожалуйста, войдите в систему.');
                     return;
                 }
                 
                 console.log('Регистрируем пользователя:', username, 'основной ник:', mainNickname);
                 
-                // Сохраняем пользователя
-                users[mainNickname] = {
+                // Создаем нового пользователя
+                const newUser = {
+                    id: 'user_' + Date.now(),
                     username: username,
+                    mainNickname: mainNickname,
                     password: password,
                     registeredAt: new Date().toISOString()
                 };
                 
+                users.push(newUser);
                 localStorage.setItem('flare_users', JSON.stringify(users));
                 localStorage.setItem('currentUser', username);
+                
+                console.log('Пользователь сохранен локально:', newUser);
+                
+                // Сохраняем в облако (асинхронно)
+                cloudStorage.saveData(cloudStorage.getCurrentLocalData()).then(success => {
+                    if (success) {
+                        console.log('Пользователь синхронизирован с облаком');
+                    } else {
+                        console.log('Пользователь сохранен локально (оффлайн режим)');
+                    }
+                });
+                
                 document.getElementById('authBtn').textContent = username;
                 document.getElementById('authModal').style.display = 'none';
-                
-                // Сохраняем данные в облако
-                await saveApplicationData();
-                
                 alert('Добро пожаловать, ' + username + '! Регистрация успешна.');
                 
                 // Показываем админ-панель если нужно
@@ -1737,6 +1794,15 @@
                 exportDataToJSON();
             });
 
+            document.getElementById('forceSyncBtn').addEventListener('click', async function() {
+                const success = await cloudStorage.saveData(cloudStorage.getCurrentLocalData());
+                if (success) {
+                    alert('Данные синхронизированы с облаком!');
+                } else {
+                    alert('Ошибка синхронизации. Проверьте подключение к интернету.');
+                }
+            });
+
             // ========== FAQ И РЕПОРТЫ ==========
             document.querySelectorAll('.faq-question').forEach(question => {
                 question.addEventListener('click', function() {
@@ -1766,7 +1832,11 @@
                     localStorage.setItem('flare_reports', JSON.stringify(reports));
                     
                     // Сохраняем в облако
-                    await saveApplicationData();
+                    cloudStorage.saveData(cloudStorage.getCurrentLocalData()).then(success => {
+                        if (success) {
+                            console.log('Репорт синхронизирован с облаком');
+                        }
+                    });
                     
                     alert('Спасибо за ваш репорт!');
                     document.getElementById('reportModal').style.display = 'none';
@@ -1836,10 +1906,15 @@
 
         async function saveVote(user, category, nominationId, nominee) {
             try {
-                console.log('Сохранение голоса...');
+                console.log('Сохранение голоса...', { user, category, nominationId, nominee });
                 
                 const votes = getUserVotes();
                 const mainNickname = getMainNickname(user);
+                
+                if (!mainNickname) {
+                    alert('Ошибка: ваш никнейм не распознан в системе');
+                    return false;
+                }
                 
                 // Ищем существующий голос пользователя в этой номинации
                 const existingVoteIndex = votes.findIndex(vote => 
@@ -1850,6 +1925,7 @@
                 
                 const vote = {
                     user: user,
+                    mainNickname: mainNickname,
                     category: category,
                     nomination: nominationId,
                     nominee: nominee,
@@ -1865,15 +1941,21 @@
                 }
                 
                 localStorage.setItem('flare_votes', JSON.stringify(votes));
+                console.log('Голос сохранен в localStorage:', vote);
                 
-                // Сохраняем в облако
-                await saveApplicationData();
-                
-                console.log('Голос успешно сохранен:', vote);
+                // Сохраняем в облако (асинхронно, не ждем завершения)
+                cloudStorage.saveData(cloudStorage.getCurrentLocalData()).then(success => {
+                    if (success) {
+                        console.log('Голос синхронизирован с облаком');
+                    } else {
+                        console.log('Голос сохранен локально (оффлайн режим)');
+                    }
+                });
                 
                 return true;
             } catch (error) {
                 console.error('Ошибка при сохранении голоса:', error);
+                alert('Ошибка при сохранении голоса. Попробуйте еще раз.');
                 return false;
             }
         }
@@ -2008,14 +2090,16 @@
             const nomineeName = selectedCard.querySelector('.nominee-name').textContent;
             const userName = localStorage.getItem('currentUser');
             
-            const success = await saveVote(userName, currentCategory, currentNomination.id, nomineeName);
+            // НЕМЕДЛЕННО показываем сообщение и закрываем модальное окно
+            alert('Ваш голос за ' + nomineeName + ' в номинации "' + currentNomination.name + '" сохранен!');
+            document.getElementById('nomineeModal').style.display = 'none';
             
-            if (success) {
-                alert('Ваш голос за ' + nomineeName + ' в номинации "' + currentNomination.name + '" сохранен!');
-                document.getElementById('nomineeModal').style.display = 'none';
-            } else {
-                alert('Ошибка при сохранении голоса!');
-            }
+            // Сохраняем голос в фоне (не ждем завершения)
+            saveVote(userName, currentCategory, currentNomination.id, nomineeName).then(success => {
+                if (!success) {
+                    console.error('Не удалось сохранить голос');
+                }
+            });
         }
 
         // ========== АДМИН-ФУНКЦИИ ==========
@@ -2080,12 +2164,12 @@
 
         function loadAdminStats() {
             const votes = getUserVotes();
-            const users = JSON.parse(localStorage.getItem('flare_users') || '{}');
+            const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
             const reports = JSON.parse(localStorage.getItem('flare_reports') || '[]');
             
             const totalVotes = votes.length;
             const uniqueVoters = [...new Set(votes.map(vote => getMainNickname(vote.user)))].length;
-            const totalUsers = Object.keys(users).length;
+            const totalUsers = users.length;
             const totalReports = reports.length;
             
             const mainVotes = votes.filter(vote => vote.category === 'main').length;
@@ -2134,12 +2218,7 @@
         }
 
         function exportDataToJSON() {
-            const data = {
-                votes: getUserVotes(),
-                users: JSON.parse(localStorage.getItem('flare_users') || '{}'),
-                reports: JSON.parse(localStorage.getItem('flare_reports') || '[]'),
-                exportTime: new Date().toISOString()
-            };
+            const data = cloudStorage.getCurrentLocalData();
             
             const dataStr = JSON.stringify(data, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
@@ -2156,7 +2235,7 @@
             alert('Данные успешно экспортированы в JSON файл!');
         }
 
-        console.log('FLARE 2025 с облачным хранилищем готов к работе!');
+        console.log('FLARE 2025 с исправленным облачным хранилищем готов к работе!');
     </script>
 </body>
 </html>
