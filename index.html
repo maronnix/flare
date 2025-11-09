@@ -1105,26 +1105,38 @@
     </div>
 
     <script>
-        // ПРОСТОЙ И РАБОЧИЙ КОД
+        // УПРОЩЕННЫЙ И ИСПРАВЛЕННЫЙ КОД
         document.addEventListener('DOMContentLoaded', function() {
             console.log('FLARE 2025 - Сайт загружен!');
             
-            // Проверяем авторизацию при загрузке
-            checkAuth();
-            
-            // Настраиваем все обработчики
-            setupEventListeners();
+            // Инициализируем всё сразу
+            initApp();
         });
 
+        function initApp() {
+            console.log('Инициализация приложения...');
+            
+            // Проверяем авторизацию
+            checkAuth();
+            
+            // Настраиваем все обработчики событий
+            setupEventListeners();
+            
+            console.log('Приложение инициализировано!');
+        }
+
         function checkAuth() {
+            console.log('Проверяем авторизацию...');
             const savedUser = localStorage.getItem('currentUser');
+            console.log('Сохраненный пользователь:', savedUser);
+            
             if (savedUser) {
                 document.getElementById('authBtn').textContent = savedUser;
                 
                 // Показываем админ-панель для maronnix9991
                 if (savedUser === 'maronnix9991') {
+                    console.log('Обнаружен админ - показываем панель');
                     document.getElementById('adminMenuContainer').style.display = 'block';
-                    console.log('Админ-панель показана для пользователя:', savedUser);
                 }
             }
         }
@@ -1134,16 +1146,20 @@
             
             // ========== АУТЕНТИФИКАЦИЯ ==========
             document.getElementById('authBtn').addEventListener('click', function() {
+                console.log('Кнопка входа нажата');
                 document.getElementById('authModal').style.display = 'flex';
             });
 
             document.getElementById('registerBtn').addEventListener('click', function() {
+                console.log('Кнопка регистрации нажата');
                 const username = document.getElementById('usernameInput').value.trim();
                 
                 if (!username) {
                     alert('Введите ваш Discord никнейм');
                     return;
                 }
+                
+                console.log('Регистрируем пользователя:', username);
                 
                 // Сохраняем пользователя
                 localStorage.setItem('currentUser', username);
@@ -1154,8 +1170,8 @@
                 
                 // Показываем админ-панель для maronnix9991
                 if (username === 'maronnix9991') {
+                    console.log('Показываем админ-панель для нового пользователя');
                     document.getElementById('adminMenuContainer').style.display = 'block';
-                    console.log('Админ-панель показана');
                 }
                 
                 // Очищаем форму
@@ -1166,34 +1182,33 @@
 
             // ========== ГОЛОСОВАНИЕ ==========
             // Основные кнопки голосования
-            document.getElementById('voteMainBtn').addEventListener('click', function() {
-                openVotingModal('main');
-            });
+            const voteButtons = [
+                'voteMainBtn', 'voteAdditionalBtn', 'voteMainBtn2', 'voteAdditionalBtn2'
+            ];
             
-            document.getElementById('voteAdditionalBtn').addEventListener('click', function() {
-                openVotingModal('additional');
-            });
-            
-            document.getElementById('voteMainBtn2').addEventListener('click', function() {
-                openVotingModal('main');
-            });
-            
-            document.getElementById('voteAdditionalBtn2').addEventListener('click', function() {
-                openVotingModal('additional');
+            voteButtons.forEach(buttonId => {
+                document.getElementById(buttonId).addEventListener('click', function() {
+                    console.log('Кнопка голосования нажата:', buttonId);
+                    const category = buttonId.includes('Main') ? 'main' : 'additional';
+                    openVotingModal(category);
+                });
             });
 
             // Навигация в голосовании
             document.getElementById('backToNominationsBtn').addEventListener('click', function() {
+                console.log('Назад к номинациям');
                 document.getElementById('nomineeModal').style.display = 'none';
                 document.getElementById('nominationModal').style.display = 'flex';
             });
 
             document.getElementById('confirmVoteBtn').addEventListener('click', function() {
+                console.log('Подтверждение голоса');
                 confirmVote();
             });
 
             // ========== АДМИН-ПАНЕЛЬ ==========
             document.getElementById('adminMenuBtn').addEventListener('click', function(e) {
+                console.log('Кнопка админ-панели нажата');
                 e.stopPropagation();
                 document.getElementById('adminDropdown').classList.toggle('show');
             });
@@ -1205,10 +1220,12 @@
 
             // Кнопки админ-панели
             document.getElementById('viewResultsBtn').addEventListener('click', function() {
+                console.log('Просмотр результатов');
                 viewResults();
             });
             
             document.getElementById('viewStatsBtn').addEventListener('click', function() {
+                console.log('Просмотр статистики');
                 viewStats();
             });
 
@@ -1279,6 +1296,8 @@
         let currentNomination = null;
 
         function openVotingModal(category) {
+            console.log('Открываем модальное окно голосования для категории:', category);
+            
             // Проверяем авторизацию
             const currentUser = localStorage.getItem('currentUser');
             if (!currentUser) {
@@ -1301,6 +1320,8 @@
         }
 
         function loadNominations(category) {
+            console.log('Загружаем номинации для категории:', category);
+            
             const nominations = category === 'main' ? [
                 { 
                     id: 'best_player', 
@@ -1349,6 +1370,7 @@
                 `;
                 
                 card.addEventListener('click', function() {
+                    console.log('Выбрана номинация:', nomination.name);
                     openNomineeModal(nomination);
                 });
                 
@@ -1357,6 +1379,8 @@
         }
 
         function openNomineeModal(nomination) {
+            console.log('Открываем модальное окно номинантов для:', nomination.name);
+            
             currentNomination = nomination;
             
             document.getElementById('nomineeModalTitle').textContent = nomination.name;
@@ -1369,6 +1393,8 @@
         }
 
         function loadNominees() {
+            console.log('Загружаем список номинантов');
+            
             const nominees = ["Cloury", "Dony_zq", "Eozik", "Flourin", "Izumrudik", "Makos", "Menchik", "Nodben", "Qusti"];
             
             const grid = document.getElementById('nomineesGrid');
@@ -1386,6 +1412,8 @@
                 `;
                 
                 card.addEventListener('click', function() {
+                    console.log('Выбран номинант:', nominee);
+                    
                     // Снимаем выделение со всех карточек
                     document.querySelectorAll('.nominee-card').forEach(c => {
                         c.classList.remove('selected');
@@ -1403,6 +1431,8 @@
         }
 
         function confirmVote() {
+            console.log('Подтверждаем голосование...');
+            
             const selectedCard = document.querySelector('.nominee-card.selected');
             if (!selectedCard) {
                 alert('Пожалуйста, выберите номинанта');
@@ -1412,39 +1442,67 @@
             const nomineeName = selectedCard.querySelector('.nominee-name').textContent;
             const userName = localStorage.getItem('currentUser');
             
-            // Сохраняем голос
-            saveVote(userName, currentCategory, currentNomination.id, nomineeName);
+            console.log('Данные для сохранения:', {
+                user: userName,
+                category: currentCategory,
+                nomination: currentNomination,
+                nominee: nomineeName
+            });
             
-            alert('Ваш голос за ' + nomineeName + ' в номинации "' + currentNomination.name + '" сохранен!');
-            document.getElementById('nomineeModal').style.display = 'none';
+            // Сохраняем голос
+            const success = saveVote(userName, currentCategory, currentNomination.id, nomineeName);
+            
+            if (success) {
+                alert('Ваш голос за ' + nomineeName + ' в номинации "' + currentNomination.name + '" сохранен!');
+                document.getElementById('nomineeModal').style.display = 'none';
+            } else {
+                alert('Ошибка при сохранении голоса!');
+            }
         }
 
         function saveVote(user, category, nominationId, nominee) {
-            // Получаем существующие голоса
-            const votes = JSON.parse(localStorage.getItem('flare_votes') || '[]');
-            
-            // Создаем объект голоса
-            const vote = {
-                user: user,
-                category: category,
-                nomination: nominationId,
-                nominee: nominee,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Добавляем новый голос
-            votes.push(vote);
-            
-            // Сохраняем обратно
-            localStorage.setItem('flare_votes', JSON.stringify(votes));
-            
-            console.log('Голос сохранен:', vote);
-            console.log('Все голоса:', votes);
+            try {
+                console.log('Сохранение голоса...');
+                
+                // Получаем существующие голоса
+                const votesJSON = localStorage.getItem('flare_votes');
+                const votes = votesJSON ? JSON.parse(votesJSON) : [];
+                
+                console.log('Текущие голоса:', votes);
+                
+                // Создаем объект голоса
+                const vote = {
+                    user: user,
+                    category: category,
+                    nomination: nominationId,
+                    nominee: nominee,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Добавляем новый голос
+                votes.push(vote);
+                
+                // Сохраняем обратно
+                localStorage.setItem('flare_votes', JSON.stringify(votes));
+                
+                console.log('Голос успешно сохранен:', vote);
+                console.log('Все голоса после сохранения:', votes);
+                
+                return true;
+            } catch (error) {
+                console.error('Ошибка при сохранении голоса:', error);
+                return false;
+            }
         }
 
         // ========== АДМИН-ФУНКЦИИ ==========
         function viewResults() {
-            const votes = JSON.parse(localStorage.getItem('flare_votes') || '[]');
+            console.log('Просмотр результатов...');
+            
+            const votesJSON = localStorage.getItem('flare_votes');
+            const votes = votesJSON ? JSON.parse(votesJSON) : [];
+            
+            console.log('Все голоса для результатов:', votes);
             
             if (votes.length === 0) {
                 alert('Голосов пока нет!');
@@ -1455,24 +1513,29 @@
             const results = {};
             
             votes.forEach(vote => {
-                const key = vote.nomination;
+                const key = `${vote.category}_${vote.nomination}`;
                 if (!results[key]) {
-                    results[key] = {};
+                    results[key] = {
+                        nomination: vote.nomination,
+                        category: vote.category,
+                        nominees: {}
+                    };
                 }
-                if (!results[key][vote.nominee]) {
-                    results[key][vote.nominee] = 0;
+                if (!results[key].nominees[vote.nominee]) {
+                    results[key].nominees[vote.nominee] = 0;
                 }
-                results[key][vote.nominee]++;
+                results[key].nominees[vote.nominee]++;
             });
 
             // Форматируем результаты
             let resultsText = 'РЕЗУЛЬТАТЫ ГОЛОСОВАНИЯ:\n\n';
             
-            Object.entries(results).forEach(([nomination, nominees]) => {
-                resultsText += `${nomination}:\n`;
+            Object.values(results).forEach(result => {
+                const categoryName = result.category === 'main' ? 'Основные' : 'Дополнительные';
+                resultsText += `${categoryName} - ${result.nomination}:\n`;
                 
                 // Сортируем по количеству голосов
-                Object.entries(nominees)
+                Object.entries(result.nominees)
                     .sort((a, b) => b[1] - a[1])
                     .forEach(([nominee, count]) => {
                         resultsText += `  ${nominee}: ${count} голосов\n`;
@@ -1485,13 +1548,21 @@
         }
 
         function viewStats() {
-            const votes = JSON.parse(localStorage.getItem('flare_votes') || '[]');
+            const votesJSON = localStorage.getItem('flare_votes');
+            const votes = votesJSON ? JSON.parse(votesJSON) : [];
             const totalVotes = votes.length;
             const uniqueVoters = [...new Set(votes.map(vote => vote.user))].length;
 
             let stats = `СТАТИСТИКА ГОЛОСОВАНИЯ:\n\n`;
             stats += `Всего голосов: ${totalVotes}\n`;
             stats += `Уникальных голосующих: ${uniqueVoters}\n`;
+            
+            // Статистика по категориям
+            const mainVotes = votes.filter(vote => vote.category === 'main').length;
+            const additionalVotes = votes.filter(vote => vote.category === 'additional').length;
+            
+            stats += `\nОсновные номинации: ${mainVotes} голосов\n`;
+            stats += `Дополнительные номинации: ${additionalVotes} голосов\n`;
             
             alert(stats);
         }
