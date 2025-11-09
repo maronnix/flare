@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FLARE 2025 - Мобильная версия</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #002bbb;
+            --secondary-blue: #0026ae;
+            --accent-blue: #0032c9;
+            --dark-blue: #001f9a;
+            --light-blue: #003bd5;
+            --black: #000000;
+            --gold: #D4AF37;
+            --light-gold: #FFD700;
+            --dark-gold: #B8860B;
+            --white: #ffffff;
+            --gray: #888888;
+            --text-light: rgba(255, 255, 255, 0.85);
+            --overlay: rgba(0, 0, 0, 0.7);
+            --success: #4CAF50;
+            --error: #f44336;
+            --flare-orange: #FF8C00;
+            --flare-yellow: #FFD700;
+            --flare-light: #FFF9C4;
+            --link-blue: #00aaff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        /* Отключаем сложные анимации для мобильных */
+        .flare-effect {
+            display: none;
+        }
+
+        /* Заставка для мобильных */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1.5s ease-in-out 2s forwards;
+        }
+
+        .splash-content {
+            text-align: center;
+        }
+
+        .splash-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+            color: var(--gray);
+        }
+
+        .splash-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            color: var(--light-gold);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Мобильная шапка */
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            z-index: 100;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .header-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Боковое меню для мобильных */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            border-left: 1px solid var(--gold);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .sidebar-title {
+            color: var(--gold);
+            font-size: 1.3rem;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section-title {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            color: var(--gold);
+        }
+
+        /* Основной контент */
+        .mobile-container {
+            padding: 80px 15px 20px;
+            max-width: 100%;
+        }
+
+        /* Герой секция для мобильных */
+        .mobile-hero {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .mobile-hero-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .mobile-hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .mobile-cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .mobile-btn {
+            padding: 16px 20px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+
+        .mobile-btn-primary {
+            background: linear-gradient(90deg, var(--gold) 0%, var(--light-gold) 100%);
+            color: var(--black);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-btn-primary:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-btn-secondary {
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .mobile-btn-secondary:active {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Секции для мобильных */
+        .mobile-section {
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-section-title {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            color: var(--gold);
+        }
+
+        .mobile-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        /* О премии для мобильных */
+        .mobile-about-text {
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .mobile-about-text p {
+            margin-bottom: 1.2rem;
+        }
+
+        .mobile-about-highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .mobile-about-image {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gold);
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+
+        .mobile-about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        /* Номинации для мобильных */
+        .mobile-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mobile-category-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-category-card:active {
+            transform: translateY(2px);
+        }
+
+        .mobile-category-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .mobile-category-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--gold);
+        }
+
+        .mobile-category-description {
+            margin-bottom: 1.2rem;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        /* FAQ для мобильных */
+        .mobile-faq-container {
+            max-width: 100%;
+        }
+
+        .mobile-faq-item {
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .mobile-faq-question {
+            padding: 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gold);
+        }
+
+        .mobile-faq-answer {
+            padding: 0 1.2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .mobile-faq-item.active .mobile-faq-answer {
+            padding: 0 1.2rem 1.2rem;
+            max-height: 500px;
+        }
+
+        .mobile-faq-toggle {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-faq-item.active .mobile-faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* Мобильные модальные окна */
+        .mobile-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .mobile-modal-content {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            border-radius: 0;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px 15px;
+            position: relative;
+        }
+
+        .mobile-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            position: sticky;
+            top: 0;
+            background: inherit;
+            z-index: 1;
+        }
+
+        .mobile-modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .mobile-close-modal {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Формы для мобильных */
+        .mobile-auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-auth-input {
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-size: 16px; /* Отключение zoom в iOS */
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .mobile-auth-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-auth-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        select.mobile-auth-input {
+            cursor: pointer;
+        }
+
+        textarea.mobile-auth-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Вкладки для мобильных */
+        .mobile-auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-auth-tab {
+            flex: 1;
+            padding: 12px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--gold);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            text-align: center;
+        }
+
+        .mobile-auth-tab.active {
+            border-bottom: 2px solid var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .mobile-auth-tab-content {
+            display: none;
+        }
+
+        .mobile-auth-tab-content.active {
+            display: block;
+        }
+
+        /* Номинации и номинанты для мобильных */
+        .mobile-nominations-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nomination-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nomination-card:active {
+            transform: translateY(2px);
+            border-color: var(--gold);
+        }
+
+        .mobile-nomination-card-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .mobile-nomination-card-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .mobile-nomination-card-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--light-gold);
+        }
+
+        .mobile-nominees-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .mobile-nominee-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mobile-nominee-card.selected {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+        }
+
+        .mobile-nominee-card:active {
+            transform: translateY(2px);
+        }
+
+        .mobile-nominee-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .mobile-modal-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+            position: sticky;
+            bottom: 0;
+            background: inherit;
+            padding: 15px 0;
+        }
+
+        /* Админ-панель для мобильных */
+        .mobile-admin-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--gold);
+        }
+
+        .mobile-admin-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-results-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .mobile-result-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1.2rem;
+        }
+
+        .mobile-result-title {
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .mobile-result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-winner {
+            color: var(--light-gold);
+            font-weight: bold;
+        }
+
+        .mobile-export-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        /* Футер для мобильных */
+        .mobile-footer {
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+            background: linear-gradient(to bottom, rgba(0, 43, 187, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .mobile-footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .mobile-footer-link {
+            color: var(--gold);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .mobile-footer-link:active {
+            opacity: 1;
+        }
+
+        .mobile-copyright {
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+
+        /* Специальные стили для iOS */
+        @supports (-webkit-touch-callout: none) {
+            .mobile-modal-content {
+                padding-bottom: 40px; /* Дополнительный отступ для iOS */
+            }
+            
+            .mobile-btn {
+                -webkit-appearance: none;
+            }
+        }
+
+        /* Специальные стили для Android */
+        @supports not (-webkit-touch-callout: none) {
+            .mobile-modal-content {
+                padding-bottom: 20px;
+            }
+        }
+
+        /* Дополнительные улучшения для touch devices */
+        @media (max-width: 768px) and (hover: none) {
+            .mobile-btn:hover {
+                transform: none;
+            }
+            
+            .mobile-category-card:hover {
+                transform: none;
+            }
+            
+            .mobile-nomination-card:hover {
+                transform: none;
+            }
+        }
+
+        /* Портретная ориентация */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .mobile-hero-title {
+                font-size: 2rem;
+            }
+            
+            .mobile-section {
+                padding: 2rem 0;
+            }
+        }
+
+        /* Альбомная ориентация */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .mobile-hero {
+                padding: 1rem 0;
+            }
+            
+            .mobile-hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .mobile-modal-content {
+                padding: 15px 10px;
+            }
+        }
+
+        /* Очень маленькие экраны */
+        @media (max-width: 360px) {
+            .mobile-hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .mobile-section-title {
+                font-size: 1.5rem;
+            }
+            
+            .mobile-modal-title {
+                font-size: 1.3rem;
+            }
+            
+            .mobile-sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Заставка -->
+    <div class="splash-screen">
+        <div class="splash-content">
+            <h1 class="splash-title">нодбин жоски</h1>
+            <p class="splash-subtitle">FLARE 2025</p>
+        </div>
+    </div>
+
+    <!-- Мобильная шапка -->
+    <header class="mobile-header">
+        <div class="header-title">FLARE 2025</div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    </header>
+
+    <!-- Боковое меню -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Меню</h3>
+            <button class="close-sidebar" id="closeSidebar">&times;</button>
+        </div>
+        
+        <div class="user-info" id="mobileUserInfo" style="display: none;">
+            <div class="user-avatar" id="mobileUserAvatar">U</div>
+            <div class="user-name" id="mobileUserName">Гость</div>
+        </div>
+
+        <div class="sidebar-section">
+            <h4 class="sidebar-section-title">Голосование</h4>
+            <button class="sidebar-btn" id="mobileVoteMain">Основные номинации</button>
+            <button class="sidebar-btn" id="mobileVoteAdditional">Дополнительные номинации</button>
+        </div>
+
+        <div class="sidebar-section">
+            <h4 class="sidebar-section-title">Информация</h4>
+            <button class="sidebar-btn" id="mobileAboutBtn">О премии</button>
+            <button class="sidebar-btn" id="mobileFaqBtn">FAQ</button>
+            <button class="sidebar-btn" id="mobileReportBtn">Сообщить о проблеме</button>
+        </div>
+
+        <div class="sidebar-section" id="mobileAdminSection" style="display: none;">
+            <h4 class="sidebar-section-title">Администрирование</h4>
+            <button class="sidebar-btn" id="mobileViewResults">Результаты</button>
+            <button class="sidebar-btn" id="mobileViewStats">Статистика</button>
+            <button class="sidebar-btn" id="mobileViewReports">Репорты</button>
+        </div>
+
+        <div class="sidebar-section">
+            <h4 class="sidebar-section-title">Аккаунт</h4>
+            <button class="sidebar-btn" id="mobileAuthBtn">Войти / Регистрация</button>
+            <button class="sidebar-btn" id="mobileLogoutBtn" style="display: none;">Выйти</button>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="mobile-container">
+        <!-- Герой секция -->
+        <section class="mobile-hero">
+            <h1 class="mobile-hero-title">FLARE 2025</h1>
+            <p class="mobile-hero-subtitle">ГЛАВНАЯ ПРЕМИЯ НОДБИН ЖОСКИ</p>
+            <div class="mobile-cta-buttons">
+                <button class="mobile-btn mobile-btn-primary" id="mobileVoteMainBtn">Основные номинации</button>
+                <button class="mobile-btn mobile-btn-primary" id="mobileVoteAdditionalBtn">Дополнительные номинации</button>
+            </div>
+        </section>
+
+        <!-- О премии -->
+        <section class="mobile-section">
+            <h2 class="mobile-section-title">О премии</h2>
+            <div class="mobile-about-text">
+                <p><span class="mobile-about-highlight">FLARE 2025</span> - это ежегодная премия, где <span class="mobile-about-highlight">только вы решаете</span>, кто достоин стать победителем!</p>
+                <p>Премия FLARE была создана для того, чтобы отметить самых активных, талантливых и влиятельных участников нашего игрового сообщества.</p>
+                <p>Голосование проходит анонимно, чтобы обеспечить честность и объективность результатов.</p>
+            </div>
+            <div class="mobile-about-image">
+                <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="FLARE 2025">
+            </div>
+        </section>
+
+        <!-- Номинации -->
+        <section class="mobile-section">
+            <h2 class="mobile-section-title">Категории номинаций</h2>
+            <div class="mobile-categories">
+                <div class="mobile-category-card">
+                    <img class="mobile-category-image" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Основные номинации">
+                    <h3 class="mobile-category-title">Основные номинации</h3>
+                    <p class="mobile-category-description">8 самых престижных наград, определяющих лучших игроков и участников сообщества</p>
+                    <button class="mobile-btn mobile-btn-primary" id="mobileVoteMainBtn2">Голосовать</button>
+                </div>
+                <div class="mobile-category-card">
+                    <img class="mobile-category-image" src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Дополнительные номинации">
+                    <h3 class="mobile-category-title">Дополнительные номинации</h3>
+                    <p class="mobile-category-description">11 специальных категорий, отмечающих уникальные таланты и достижения</p>
+                    <button class="mobile-btn mobile-btn-primary" id="mobileVoteAdditionalBtn2">Голосовать</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="mobile-section">
+            <h2 class="mobile-section-title">FAQ</h2>
+            <div class="mobile-faq-container">
+                <div class="mobile-faq-item">
+                    <div class="mobile-faq-question">
+                        <span>Как голосовать?</span>
+                        <span class="mobile-faq-toggle">+</span>
+                    </div>
+                    <div class="mobile-faq-answer">
+                        <p>При заполнении выбирайте любой понравившийся вами ответ, и прошу не накручивайте голоса.</p>
+                    </div>
+                </div>
+                <div class="mobile-faq-item">
+                    <div class="mobile-faq-question">
+                        <span>Что будет, если я введу фейковый никнейм?</span>
+                        <span class="mobile-faq-toggle">+</span>
+                    </div>
+                    <div class="mobile-faq-answer">
+                        <p>Если вы будете писать фейковый никнейм или притворяться другим участником, ваши голоса будут не зачтены!</p>
+                    </div>
+                </div>
+                <div class="mobile-faq-item">
+                    <div class="mobile-faq-question">
+                        <span>Что если я нашёл баг или недоработку?</span>
+                        <span class="mobile-faq-toggle">+</span>
+                    </div>
+                    <div class="mobile-faq-answer">
+                        <p>Если вы нашли баг, недоработку или у вас есть идея для улучшения, пожалуйста, сообщите об этом через меню.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Админ-панель (будет показана только админам) -->
+        <section class="mobile-section" id="mobileAdminPanel" style="display: none;">
+            <h2 class="mobile-section-title">Админ-панель</h2>
+            <div class="mobile-admin-panel">
+                <div class="sync-status" id="mobileSyncStatus"></div>
+                
+                <div class="mobile-admin-section">
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">Результаты голосования</h3>
+                    <div class="mobile-results-grid" id="mobileAdminResults">
+                        <!-- Результаты будут здесь -->
+                    </div>
+                    <button class="mobile-export-btn" id="mobileExportResults">Экспорт данных в JSON</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Футер -->
+    <footer class="mobile-footer">
+        <div class="mobile-footer-links">
+            <a href="#" class="mobile-footer-link">Правила</a>
+            <a href="#" class="mobile-footer-link">Контакты</a>
+        </div>
+        <p class="mobile-copyright">© 2025 FLARE Awards</p>
+    </footer>
+
+    <!-- Модальные окна -->
+    <div class="mobile-modal" id="mobileAuthModal">
+        <div class="mobile-modal-content">
+            <div class="mobile-modal-header">
+                <h3 class="mobile-modal-title">Аутентификация</h3>
+                <button class="mobile-close-modal">&times;</button>
+            </div>
+            
+            <div class="mobile-auth-tabs">
+                <button class="mobile-auth-tab active" data-tab="login">Войти</button>
+                <button class="mobile-auth-tab" data-tab="register">Регистрация</button>
+            </div>
+            
+            <!-- Форма входа -->
+            <div class="mobile-auth-tab-content active" id="mobileLoginTab">
+                <div class="mobile-auth-form">
+                    <input type="text" class="mobile-auth-input" id="mobileLoginUsername" placeholder="Ваш Discord никнейм">
+                    <input type="password" class="mobile-auth-input" id="mobileLoginPassword" placeholder="Пароль">
+                    <button class="mobile-btn mobile-btn-primary" id="mobileLoginBtn">Войти</button>
+                </div>
+            </div>
+            
+            <!-- Форма регистрации -->
+            <div class="mobile-auth-tab-content" id="mobileRegisterTab">
+                <div class="mobile-auth-form">
+                    <input type="text" class="mobile-auth-input" id="mobileRegisterUsername" placeholder="Ваш Discord никнейм">
+                    <input type="password" class="mobile-auth-input" id="mobileRegisterPassword" placeholder="Придумайте пароль">
+                    <input type="password" class="mobile-auth-input" id="mobileConfirmPassword" placeholder="Подтвердите пароль">
+                    <button class="mobile-btn mobile-btn-primary" id="mobileRegisterBtn">Зарегистрироваться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Остальные модальные окна (номинации, номинанты, репорты) -->
+    <!-- Код аналогичный desktop версии, но с mobile- классами -->
+
+    <script>
+        // Здесь будет JavaScript код для мобильной версии
+        // Он будет аналогичен desktop версии, но с оптимизацией для touch устройств
+        // Включая все функции аутентификации, голосования, админ-панели и т.д.
+        
+        // Для экономии места не дублирую весь JS код
+        // В реальном проекте нужно перенести всю логику из desktop версии
+        // с адаптацией для мобильных устройств
+        
+        console.log('Мобильная версия FLARE 2025 загружена!');
+        
+        // Базовые функции для мобильного интерфейса
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация мобильного меню
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('mobileSidebar');
+            const closeSidebar = document.getElementById('closeSidebar');
+            
+            menuBtn.addEventListener('click', function() {
+                sidebar.classList.add('active');
+            });
+            
+            closeSidebar.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+            });
+            
+            // Закрытие меню при клике вне его
+            document.addEventListener('click', function(event) {
+                if (!sidebar.contains(event.target) && event.target !== menuBtn) {
+                    sidebar.classList.remove('active');
+                }
+            });
+            
+            // Инициализация FAQ
+            document.querySelectorAll('.mobile-faq-question').forEach(question => {
+                question.addEventListener('click', function() {
+                    this.parentElement.classList.toggle('active');
+                });
+            });
+            
+            // Инициализация вкладок аутентификации
+            document.querySelectorAll('.mobile-auth-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    document.querySelectorAll('.mobile-auth-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.mobile-auth-tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    document.getElementById('mobile' + tabId.charAt(0).toUpperCase() + tabId.slice(1) + 'Tab').classList.add('active');
+                });
+            });
+            
+            // Обработчики для кнопок голосования
+            const voteButtons = [
+                'mobileVoteMain', 'mobileVoteAdditional', 
+                'mobileVoteMainBtn', 'mobileVoteAdditionalBtn',
+                'mobileVoteMainBtn2', 'mobileVoteAdditionalBtn2'
+            ];
+            
+            voteButtons.forEach(buttonId => {
+                const button = document.getElementById(buttonId);
+                if (button) {
+                    button.addEventListener('click', function() {
+                        // Здесь будет логика открытия модального окна голосования
+                        alert('Функция голосования будет доступна после входа в систему');
+                        document.getElementById('mobileAuthModal').style.display = 'block';
+                        document.getElementById('mobileSidebar').classList.remove('active');
+                    });
+                }
+            });
+            
+            // Закрытие модальных окон
+            document.querySelectorAll('.mobile-close-modal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.mobile-modal').style.display = 'none';
+                });
+            });
+            
+            document.querySelectorAll('.mobile-modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Прокрутка к секциям из меню
+            document.getElementById('mobileAboutBtn').addEventListener('click', function() {
+                document.querySelector('.mobile-section:nth-child(2)').scrollIntoView({ behavior: 'smooth' });
+                sidebar.classList.remove('active');
+            });
+            
+            document.getElementById('mobileFaqBtn').addEventListener('click', function() {
+                document.querySelector('.mobile-section:nth-child(4)').scrollIntoView({ behavior: 'smooth' });
+                sidebar.classList.remove('active');
+            });
+            
+            // Репорты
+            document.getElementById('mobileReportBtn').addEventListener('click', function() {
+                alert('Форма репорта будет доступна в полной версии');
+                sidebar.classList.remove('active');
+            });
+            
+            // Аутентификация
+            document.getElementById('mobileAuthBtn').addEventListener('click', function() {
+                document.getElementById('mobileAuthModal').style.display = 'block';
+                sidebar.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
