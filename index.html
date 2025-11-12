@@ -1,0 +1,3223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLARE 2025 - Главная премия Нодбин Жоски</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* Все предыдущие стили остаются без изменений */
+        :root {
+            --primary-blue: #002bbb;
+            --secondary-blue: #0026ae;
+            --accent-blue: #0032c9;
+            --dark-blue: #001f9a;
+            --light-blue: #003bd5;
+            --black: #000000;
+            --gold: #D4AF37;
+            --light-gold: #FFD700;
+            --dark-gold: #B8860B;
+            --white: #ffffff;
+            --gray: #888888;
+            --text-light: rgba(255, 255, 255, 0.85);
+            --overlay: rgba(0, 0, 0, 0.7);
+            --success: #4CAF50;
+            --error: #f44336;
+            --flare-orange: #FF8C00;
+            --flare-yellow: #FFD700;
+            --flare-light: #FFF9C4;
+            --link-blue: #00aaff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--light-gold) 100%);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.7);
+        }
+
+        /* Для Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold) rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Вспышка FLARE */
+        .flare-effect {
+            position: fixed;
+            top: -500px;
+            left: -500px;
+            width: 1000px;
+            height: 1000px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .flare-core {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--flare-light) 0%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0.4;
+            animation: flarePulse 10s infinite ease-in-out;
+            filter: blur(20px);
+        }
+
+        @keyframes flarePulse {
+            0%, 100% { 
+                opacity: 0.4; 
+                transform: scale(1) rotate(0deg);
+            }
+            25% { 
+                opacity: 0.5; 
+                transform: scale(1.05) rotate(5deg);
+            }
+            50% { 
+                opacity: 0.6; 
+                transform: scale(1.1) rotate(0deg);
+            }
+            75% { 
+                opacity: 0.5; 
+                transform: scale(1.05) rotate(-5deg);
+            }
+        }
+
+        @keyframes rayRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Заставка */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1.5s ease-in-out 2s forwards;
+        }
+
+        .splash-content {
+            text-align: center;
+        }
+
+        .splash-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+            color: var(--gray);
+        }
+
+        .splash-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            color: var(--light-gold);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Шапка */
+        header {
+            padding: 1rem 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled .header-title {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .auth-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+            box-shadow: 0 0 15px var(--gold);
+        }
+
+        /* Админ-панель */
+        .admin-menu-container {
+            display: none;
+        }
+
+        .admin-menu-btn {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-menu-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .admin-dropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            border: 1px solid var(--gold);
+            border-radius: 10px;
+            padding: 1rem;
+            min-width: 250px;
+            z-index: 101;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .admin-dropdown.show {
+            display: block;
+        }
+
+        .admin-dropdown-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .admin-dropdown-item:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .badge {
+            background: var(--gold);
+            color: var(--black);
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* Герой секция */
+        .hero {
+            text-align: center;
+            padding: 8rem 0 5rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .hero.scrolled {
+            margin-top: 60px;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .hero.scrolled .hero-title {
+            transform: scale(0.8);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .hero.scrolled .hero-subtitle {
+            transform: scale(0.8);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            transition: all 0.3s ease;
+        }
+
+        .hero.scrolled .cta-buttons {
+            transform: scale(0.8);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--gold) 0%, var(--light-gold) 100%);
+            color: var(--black);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Секция с таймером */
+        .timer-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 25px;
+            margin: 4rem 20px 5rem;
+            padding: 4rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 43, 187, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border-radius: 25px;
+            z-index: -1;
+        }
+
+        .timer-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--gold);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .timer-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+        }
+
+        .timer-value {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            min-width: 140px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .timer-label {
+            font-size: 1.2rem;
+            color: var(--white);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timer-note {
+            font-size: 1.1rem;
+            color: var(--light-gold);
+            margin-top: 2rem;
+            opacity: 0.9;
+        }
+
+        .timer-ended {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+            margin: 2rem 0;
+        }
+
+        /* Секции */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            color: var(--gold);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        /* О премии */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            line-height: 1.6;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-highlight {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .about-image {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        /* Результаты прошлого года */
+        .previous-results-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 25px;
+            margin: 0 20px 5rem;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .previous-results-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 43, 187, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border-radius: 25px;
+            z-index: -1;
+        }
+
+        .results-carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .carousel-container {
+            overflow: hidden;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 3rem;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .carousel-title {
+            font-size: 2rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .carousel-winner {
+            font-size: 3rem;
+            color: var(--light-gold);
+            margin: 2rem 0;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
+            font-weight: 700;
+        }
+
+        .carousel-year {
+            font-size: 1.2rem;
+            color: var(--white);
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .carousel-btn {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: var(--gold);
+            transform: scale(1.2);
+        }
+
+        /* Номинации */
+        .nominations-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 25px;
+            margin: 0 20px;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nominations-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 43, 187, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border-radius: 25px;
+            z-index: -1;
+        }
+
+        .categories {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--gold);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+        }
+
+        .category-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        .category-description {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        /* FAQ */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            color: var(--gold);
+        }
+
+        .faq-question:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .faq-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--gold);
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-link {
+            color: var(--link-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .faq-link:hover {
+            text-decoration: underline;
+            color: #66ccff;
+        }
+
+        /* Футер */
+        footer {
+            padding: 4rem 0 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+            background: linear-gradient(to bottom, rgba(0, 43, 187, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
+            position: relative;
+            width: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--gold);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--gold);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-input {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        textarea.auth-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        select.auth-input {
+            cursor: pointer;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        /* Модальные окна для голосования */
+        .vote-modal-content {
+            max-width: 1200px;
+            width: 95%;
+            max-height: 90vh;
+        }
+
+        .nominations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .nomination-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nomination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: var(--gold);
+        }
+
+        .nomination-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .nomination-card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .nomination-card-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .nomination-card-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .nomination-modal-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .nominees-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nominee-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nominee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: var(--gold);
+        }
+
+        .nominee-card.selected {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .nominee-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .nominee-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-nav {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .splash-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .nominations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nominees-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .flare-effect {
+                display: none;
+            }
+            
+            .header-title {
+                display: none;
+            }
+            
+            .nominations-section {
+                margin: 0 10px;
+                padding: 3rem 1rem;
+            }
+            
+            .timer-section {
+                margin: 0 10px 3rem;
+                padding: 3rem 1rem;
+            }
+            
+            .previous-results-section {
+                margin: 0 10px 3rem;
+                padding: 3rem 1rem;
+            }
+            
+            .timer-value {
+                font-size: 3rem;
+                min-width: 100px;
+                padding: 0.8rem;
+            }
+            
+            .timer-container {
+                gap: 1rem;
+            }
+            
+            .timer-unit {
+                min-width: 90px;
+            }
+            
+            .timer-title {
+                font-size: 2rem;
+            }
+            
+            .carousel-winner {
+                font-size: 2rem;
+            }
+        }
+
+        /* Новые стили для вкладок аутентификации */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .auth-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--gold);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .auth-tab.active {
+            border-bottom: 2px solid var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .auth-tab-content {
+            display: none;
+        }
+
+        .auth-tab-content.active {
+            display: block;
+        }
+
+        /* Стили для админ-панели */
+        .admin-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--gold);
+        }
+
+        .admin-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .result-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .winner {
+            color: var(--light-gold);
+            font-weight: bold;
+        }
+
+        .report-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-nickname {
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .report-reason {
+            background: var(--primary-blue);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .export-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .export-btn:hover {
+            background: #45a049;
+        }
+
+        /* Индикатор загрузки */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid var(--gold);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .sync-status {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        .sync-success {
+            color: var(--success);
+        }
+
+        .sync-error {
+            color: var(--error);
+        }
+
+        /* Кнопка опроса в правом нижнем углу */
+        .poll-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .poll-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .poll-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Стили для треков с ссылками */
+        .track-link {
+            color: var(--link-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .track-link:hover {
+            text-decoration: underline;
+            color: #66ccff;
+        }
+
+        /* Стили для поля ввода "Другое" */
+        .other-input-container {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .other-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+
+        .other-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* Стили для опроса */
+        .poll-question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .poll-question p {
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .poll-question textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .poll-question textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .poll-question textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Стили для заблокированного голосования */
+        .voting-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .voting-disabled-message {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin: 2rem 0;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Вспышка FLARE -->
+    <div class="flare-effect">
+        <div class="flare-core"></div>
+    </div>
+
+    <!-- Заставка -->
+    <div class="splash-screen">
+        <div class="splash-content">
+            <h1 class="splash-title">нодбин жоски</h1>
+        </div>
+    </div>
+
+    <!-- Шапка -->
+    <header id="mainHeader">
+        <div class="header-container">
+            <div class="header-title">FLARE 2025</div>
+            <div class="admin-menu-container" id="adminMenuContainer">
+                <button class="admin-menu-btn" id="adminMenuBtn">Админ-панель</button>
+                <div class="admin-dropdown" id="adminDropdown">
+                    <div class="admin-dropdown-item" id="viewResultsBtn">Просмотреть результаты</div>
+                    <div class="admin-dropdown-item" id="viewStatsBtn">Статистика голосования</div>
+                    <div class="admin-dropdown-item" id="viewReportsBtn">Репорты <span class="badge" id="reportsCount">0</span></div>
+                </div>
+            </div>
+            <button class="auth-btn" id="authBtn">Войти</button>
+        </div>
+    </header>
+
+    <!-- Кнопка опроса -->
+    <button class="poll-button" id="pollButton">
+        <span class="poll-icon">?</span>
+        Опрос
+    </button>
+
+    <div class="container">
+        <!-- Герой секция -->
+        <section class="hero" id="heroSection">
+            <h1 class="hero-title">FLARE 2025</h1>
+            <p class="hero-subtitle">ГЛАВНАЯ ПРЕМИЯ НОДБИН ЖОСКИ</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" id="voteMainBtn">Основные номинации</button>
+                <button class="btn btn-primary" id="voteAdditionalBtn">Дополнительные номинации</button>
+            </div>
+        </section>
+
+        <!-- О премии -->
+        <section class="section" id="about">
+            <h2 class="section-title">О премии</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p><span class="about-highlight">FLARE 2025</span> - это ежегодная премия, где <span class="about-highlight">только вы решаете</span>, кто достоин стать победителем!</p>
+                    <p>Премия FLARE была создана для того, чтобы отметить самых активных, талантливых и влиятельных участников нашего сервера.</p>
+                    <p>Голосование проходит анонимно, чтобы обеспечить честность и объективность результатов.</p>
+                </div>
+                <div class="about-image">
+                    <img id="aboutImage" src="https://i.postimg.cc/ZqYkxMBw/nodbin-joski-1.png" alt="FLARE 2025">
+                </div>
+            </div>
+        </section>
+
+        <!-- Результаты прошлого года -->
+        <section class="section previous-results-section" id="previousResults">
+            <h2 class="section-title">Результаты FLARE 2024</h2>
+            <div class="results-carousel">
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Слайды будут добавлены через JavaScript -->
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <button class="carousel-btn" id="prevBtn">❮</button>
+                    <button class="carousel-btn" id="nextBtn">❯</button>
+                </div>
+                <div class="carousel-dots" id="carouselDots">
+                    <!-- Точки будут добавлены через JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Номинации -->
+        <section class="section nominations-section" id="nominations">
+            <h2 class="section-title">Категории номинаций</h2>
+            <div class="categories">
+                <div class="category-card">
+                    <div class="category-icon">👑</div>
+                    <h3 class="category-title">Основные номинации</h3>
+                    <p class="category-description">8 самых престижных наград, определяющих лучших участников сервера</p>
+                    <button class="btn btn-primary" id="voteMainBtn2">Голосовать</button>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">⭐</div>
+                    <h3 class="category-title">Дополнительные номинации</h3>
+                    <p class="category-description">9 специальных категорий, отмечающих уникальные таланты и достижения</p>
+                    <button class="btn btn-primary" id="voteAdditionalBtn2">Голосовать</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Таймер до окончания голосования -->
+        <section class="timer-section" id="timerSection">
+            <h2 class="timer-title">ДО ОКОНЧАНИЯ ГОЛОСОВАНИЯ</h2>
+            <div class="timer-container" id="timerContainer">
+                <div class="timer-unit">
+                    <div class="timer-value" id="days">00</div>
+                    <div class="timer-label">ДНЕЙ</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-value" id="hours">00</div>
+                    <div class="timer-label">ЧАСОВ</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-value" id="minutes">00</div>
+                    <div class="timer-label">МИНУТ</div>
+                </div>
+                <div class="timer-unit">
+                    <div class="timer-value" id="seconds">00</div>
+                    <div class="timer-label">СЕКУНД</div>
+                </div>
+            </div>
+            <p class="timer-note">Голосование завершится 26 ноября 2025 года в 15:00 по МСК</p>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section" id="faq">
+            <h2 class="section-title">FAQ</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>ПРАВИЛА ГОЛОСОВАНИЯ</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>1. Выбирайте любой понравившийся ответ.</p>
+                        <p>2. Запрещена накрутка голосов в номинациях.</p>
+                        <p>3. Запрещено голосовать за самого себя.</p>
+                        <p>(Исключения: конфликт, событие, провал и фраза года).</p>
+                        <p>4. Запрещено в ответ "Другое" писать всякую чушь, голос будет не засчитан, принимается только никнеймы участников сервера или события на сервере в поле ответа.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>КАК МНЕ ЗАРЕГИСТРИРОВАТЬСЯ В АККАУНТ?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Справа сверху имеется кнопка "Войти", вводить нужно свой распространённый никнейм или оригинальный Discord никнейм. Пароль придумывайте надёжный, дабы избежать изменения голосов на вашем аккаунте.</p>
+                        <p>В случае если ваш аккаунт уже зарегистирован не вами, сообщите об этом главе сервера в лс, вам сбросят пароль.<p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>ГДЕ БУДЕТ ПРОХОДИТЬ ПРЕМИЯ В ЭТОМ ГОДУ?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>29 ноября на трибуне сервера нодбин жоски в 18:00 по МСК</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>МОГУ ЛИ Я КАК-ТО ПОМОЧЬ ПРЕМИИ В БУДУЩЕМ?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Справа снизу имеется кнопка "Опрос", там вы должны ответить на вопросы, чтобы помочь сделать премию ещё лучше.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>ЧТО ЕСЛИ Я НАШЁЛ БАГ ИЛИ НЕДОРАБОТКУ?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Если вы нашли баг, недоработку или у вас есть идея для улучшения, пожалуйста, сообщите об этом, нажав на <a href="#" class="faq-link" id="reportLink">ссылку</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Админ-панель (будет показана только админам) -->
+        <section class="section" id="adminPanel" style="display: none;">
+            <h2 class="section-title">Админ-панель</h2>
+            <div class="admin-panel">
+                <div class="sync-status" id="syncStatus"></div>
+                
+                <div class="admin-section">
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">Результаты голосования</h3>
+                    <div class="results-grid" id="adminResults">
+                        <!-- Результаты будут здесь -->
+                    </div>
+                    <button class="export-btn" id="exportResults">Экспорт данных в JSON</button>
+                    <button class="export-btn" id="forceSyncBtn" style="background: var(--accent-blue); margin-left: 10px;">Принудительная синхронизация</button>
+                </div>
+                
+                <div class="admin-section">
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">Статистика голосования</h3>
+                    <div id="adminStats">
+                        <!-- Статистика будет здесь -->
+                    </div>
+                </div>
+                
+                <div class="admin-section">
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">Репорты пользователей</h3>
+                    <div id="adminReports">
+                        <!-- Репорты будут здесь -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Правила голосования</a>
+                <a href="#" class="footer-link">Контакты</a>
+            </div>
+            <p class="copyright">© 2025 FLARE Awards. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальные окна -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Аутентификация</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Войти</button>
+                <button class="auth-tab" data-tab="register">Регистрация</button>
+            </div>
+            
+            <!-- Форма входа -->
+            <div class="auth-tab-content active" id="loginTab">
+                <div class="auth-form">
+                    <input type="text" class="auth-input" id="loginUsername" placeholder="Ваш Discord никнейм">
+                    <input type="password" class="auth-input" id="loginPassword" placeholder="Пароль">
+                    <button class="btn btn-primary" id="loginBtn">Войти</button>
+                </div>
+            </div>
+            
+            <!-- Форма регистрации -->
+            <div class="auth-tab-content" id="registerTab">
+                <div class="auth-form">
+                    <input type="text" class="auth-input" id="registerUsername" placeholder="Ваш Discord никнейм">
+                    <input type="password" class="auth-input" id="registerPassword" placeholder="Придумайте пароль">
+                    <input type="password" class="auth-input" id="confirmPassword" placeholder="Подтвердите пароль">
+                    <button class="btn btn-primary" id="registerBtn">Зарегистрироваться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="nominationModal">
+        <div class="modal-content vote-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="nominationModalTitle">Выберите номинацию</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="nominations-grid" id="nominationsGrid">
+                <!-- Номинации будут здесь -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="nomineeModal">
+        <div class="modal-content vote-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="nomineeModalTitle">Выберите номинанта</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <p class="nomination-modal-description" id="nominationDescription"></p>
+            <div class="nominees-grid" id="nomineesGrid">
+                <!-- Номинанты будут здесь -->
+            </div>
+            <div class="modal-nav">
+                <button class="btn btn-secondary" id="backToNominationsBtn">Назад к номинациям</button>
+                <button class="btn btn-primary" id="confirmVoteBtn" disabled>Подтвердить голос</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Сообщить о проблеме</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="auth-form">
+                <input type="text" class="auth-input" id="reportNickname" placeholder="Ваш ник">
+                <select class="auth-input" id="reportReason">
+                    <option value="" disabled selected>Причина</option>
+                    <option value="bug">Найден баг</option>
+                    <option value="improvement">Найдена недоработка</option>
+                </select>
+                <textarea class="auth-input" id="reportDescription" placeholder="Опишите проблему" rows="4"></textarea>
+                <button class="btn btn-primary" id="submitReport">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно опроса -->
+    <div class="modal" id="pollModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Опрос для улучшения FLARE</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="auth-form">
+                <div class="poll-question">
+                    <p><strong>1. Что ты думаешь насчёт голосования FLARE 2025?</strong></p>
+                    <textarea id="pollQuestion1" placeholder="Ваш ответ..." rows="3"></textarea>
+                </div>
+                <div class="poll-question">
+                    <p><strong>2. Какую номинацию вы бы хотели видеть в следующем году?</strong></p>
+                    <textarea id="pollQuestion2" placeholder="Ваш ответ..." rows="3"></textarea>
+                </div>
+                <div class="poll-question">
+                    <p><strong>3. По сравнению с предыдущим годом, в этом FLARE стал лучше?</strong></p>
+                    <textarea id="pollQuestion3" placeholder="Ваш ответ..." rows="3"></textarea>
+                </div>
+                <div class="poll-question">
+                    <p><strong>4. Что нам стоит улучшить при проведении следующих голосований?</strong></p>
+                    <textarea id="pollQuestion4" placeholder="Ваш ответ..." rows="3"></textarea>
+                </div>
+                <button class="btn btn-primary" id="submitPoll">Отправить опрос</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== КОНФИГУРАЦИЯ ОБЛАЧНОГО ХРАНИЛИЩА ==========
+        const JSONBIN_API_KEY = '$2a$10$ZzqGSk9XmuCwrk6P2I0NNOjjfT/hS0tnyod4TaKGfz8pGZ/BIgHzO';
+        const JSONBIN_BIN_ID = '6910cb5bae596e708f4e9a29';
+        
+        // Конфигурация приложения
+        const ALLOWED_NICKNAMES = {
+            'maronnix': ['maronnix', 'maronn', 'maron', 'maronnix9991'],
+            'qusti': ['qusti', 'qusti1', 'qusti11', 'qusti111', 'qust1'],
+            'dony_zq': ['dony_zq', 'sad_dony', 'uw7dhdywg'],
+            'makos': ['makos', 'akirakume'],
+            'izumrudik': ['izumrudik', 'ivan_5886', '2010_1702'],
+            'nodben': ['nodben', 'noden'],
+            'menchik': ['menchik', 's1b+', 'sss+', 'jr1_s'],
+            'cloury': ['cloury', 'ainiiiaz0132', 'ainiiiaz'],
+            'flourin': ['flourin', 'flouurinskiy', 'flourinees'],
+            'eozik': ['eozik', 'seriy_eozik']
+        };
+
+        const ADMIN_USERS = ['maronnix', 'maronnix9991'];
+
+        // Объект с URL изображений для номинантов
+        const AVATAR_IMAGES = {
+            "Akirakume": "https://i.postimg.cc/DzHC447W/Akirakume.png",
+            "Dony_zq": "https://i.postimg.cc/ydRLm6NZ/Dony-zq.png",
+            "Eozik": "https://i.postimg.cc/gJhgVc0q/Eozik.png",
+            "Flourin": "https://i.postimg.cc/qRK1sB7w/Flourin.png",
+            "Maronnix": "https://i.postimg.cc/B6FmTZvz/Maronnix.png",
+            "Nodben": "https://i.postimg.cc/DZGxrfzH/Nodben.png",
+            "Qusti": "https://i.postimg.cc/PJk22GL6/Qusti.png",
+            "Cloury": "https://i.postimg.cc/d0pWZZJ8/Cloury.png",
+            "Menchik": "https://i.postimg.cc/W3Z5Gp4K/Menchik.png",
+            "Izumrudik": "https://i.postimg.cc/FRSTyFKB/Izumrudik.png",
+            "Denis_185": "https://i.postimg.cc/hthb7rhp/Denis-185.png",
+            "Fines": "https://i.postimg.cc/K84rgN4W/Fines.png",
+            "Otmorozik": "https://i.postimg.cc/N0H6dj6G/Otmorozik.png",
+            "Hasan": "https://i.postimg.cc/NMXd6G0C/Hasan.png",
+            "Counter-Strike 2": "https://i.postimg.cc/4yN0mVgg/cs2.png",
+            "Fortnite": "https://i.postimg.cc/KjvWRB2G/fortnite.png",
+            "Garry's Mod": "https://i.postimg.cc/fyvhPmcb/garrysmod.png",
+            "Marvel's Spider-Man 2": "https://i.postimg.cc/J062J0rW/msm2.png",
+            "Among Us": "https://i.postimg.cc/RhsDfhMj/amongus.png",
+            "Roblox": "https://i.postimg.cc/cC9bYCxH/roblox.png",
+            "Akirakume, Eozik, Flourin, Maronnix, Nodben x Fines, Denis_185": "https://i.postimg.cc/FK8Pkkhk/Akirakume-Eozik-Flourin-Maronnix-Nodben-x-Fines-Denis-185.png",
+            "Akirakume x Flourin": "https://i.postimg.cc/TPFk55Tb/Akirakume-x-Flourin.png",
+            "Akirakume x Otmorozik": "https://i.postimg.cc/q7Sm66p3/Akirakume-x-Otmorozik.png",
+            "Eozik x Izumrudik": "https://i.postimg.cc/nzm34VLq/Eozik-x-Izumrudik.png",
+            "Akirakume x Menchik": "https://i.postimg.cc/ryDnYS9h/Akirakume_x_Menchik.png",
+            "Dony_zq x Nodben": "https://i.postimg.cc/9XD8NGBt/Dony_zq_x_Nodben.png",
+            "Maronnix x Qusti": "https://i.postimg.cc/y6DQrFTQ/Maronnix_x_Qusti.png",
+            "Akirakume x Balabol": "https://i.postimg.cc/05zWHpCc/Akirakume_x_Balabol.png",
+            "Dony_zq x Maronnix": "https://i.postimg.cc/Kc1qsn56/Dony_zq_x_Maronnix.png",
+            "Нодбен начал стримить": "https://i.postimg.cc/xTGtS3Fr/нодбен_начал_стримить.png",
+            "У Макоса появился кот": "https://i.postimg.cc/dVqnQZzR/у_макоса_появился_кот.png",
+            "Игры на CYBERSHOKE": "https://i.postimg.cc/K8Jf1v2V/игры_на_cybershoke.png",
+            "Костя подстригся налысо": "https://i.postimg.cc/7Zm95Y4r/Костя_подстригся_налысо.png",
+            "NJSC - Nodben Joski Server Cup 2025": "https://i.postimg.cc/t4XDRnLn/NJSC.png",
+            "Несостоящаяся встреча Флоурина с Нодбеном": "https://i.postimg.cc/kXNfdvh3/несостаящаяся_встреча_нодбена_и_флоурина.png",
+            "Макос перестал стримить спустя месяц": "https://i.postimg.cc/FHDpYsvQ/макос_перестал_стримить_спустя_месяц.png",
+            "Интернет Нодбена": "https://i.postimg.cc/VkDgJL8h/Интернет_нодбена.png",
+            "Eozik - Я НЕ ВЕРЮ": "https://i.postimg.cc/g2Y4cLf0/я_не_верю.png",
+            "Maronnix - ты чо дурак?": "https://i.postimg.cc/bN03j9FS/ты_чо_дурак.png",
+            "Qusti - 123": "https://i.postimg.cc/XYVxNBTY/123.png",
+            "Qusti - батя твой": "https://i.postimg.cc/6p9z64Dd/батя_твой.png",
+            "Бета-тест Rematch": "https://i.postimg.cc/VkDgJL87/Бета_тест_рематч.png",
+            "Релиз Marvel's Spider-Man 2": "https://i.postimg.cc/Nf8pwkPY/релиз_msm2.png",
+            "На сервере появились новые участники": "https://i.postimg.cc/8PdtVmn1/появились_новые_участники.png",
+            "Выход серии THE FANTASTIC SPIDER-MAN 4 ЭПИЗОД": "https://i.postimg.cc/2S2G18Dc/выход_серии_tfsm4.png",
+            "Другое": "https://i.postimg.cc/NFJzTFs5/drugoe.png"
+        };
+
+        // Объект с URL изображений для номинаций
+        const NOMINATION_IMAGES = {
+            // Основные номинации
+            'flare_king': 'https://i.postimg.cc/9F55X1XV/flare_king.png',
+            'game_of_year': 'https://i.postimg.cc/wvnKmQhJ/игра_года.png',
+            'best_cs_player': 'https://i.postimg.cc/cC3pMtmT/лучший_cs_участник.png',
+            'best_fortnite_player': 'https://i.postimg.cc/9096twpJ/лучший_fortnite_участник.png',
+            'multigaming_of_year': 'https://i.postimg.cc/k4Lrbvxt/multigaming_года.png',
+            'meme_person_of_year': 'https://i.postimg.cc/Fs55FGFv/человек_мем_года.png',
+            'conflict_of_year': 'https://i.postimg.cc/yd2qZyF0/конфликт_года.png',
+            'breakthrough_of_year': 'https://i.postimg.cc/4ycDbH5S/прорыв_года.png',
+            
+            // Дополнительные номинации
+            'track_of_year': 'https://i.postimg.cc/05J1qhsn/трек_года.png',
+            'toxic_of_year': 'https://i.postimg.cc/zDRY14rf/токсик_года.png',
+            'duo_of_year': 'https://i.postimg.cc/k4LrbvxS/дуо_года.png',
+            'cringe_of_year': 'https://i.postimg.cc/pT3NFJDY/кринж_года.png',
+            'freak_of_year': 'https://i.postimg.cc/CLTTMJMT/фрик_года.png',
+            'event_of_year': 'https://i.postimg.cc/yxRMX3Pw/событие_года.png',
+            'fail_of_year': 'https://i.postimg.cc/sxWk9Gcn/провал_года.png',
+            'phrase_of_year': 'https://i.postimg.cc/65JJ6zWF/фраза_года.png',
+            'sos_of_year': 'https://i.postimg.cc/HnMq48zG/сос_года.png'
+        };
+
+        // Результаты прошлого года
+        const PREVIOUS_RESULTS = [
+            { nomination: "FLARE KING", winner: "Maronnix" },
+            { nomination: "ИГРА ГОДА", winner: "Fortnite" },
+            { nomination: "MULTIGAMING ГОДА", winner: "Maronnix" },
+            { nomination: "ЛУЧШИЙ CS-УЧАСТНИК", winner: "Akirakume" },
+            { nomination: "ЛУЧШИЙ FORTNITE-УЧАСТНИК", winner: "Dony_zq" },
+            { nomination: "ЛУЧШИЙ PSO-УЧАСТНИК", winner: "Otmorozik" },
+            { nomination: "КИДАЛОВО ГОДА", winner: "Nodben" },
+            { nomination: "КОНФЛИКТ ГОДА", winner: "Fines x Flourin" },
+            { nomination: "ЧЕЛОВЕК-МЕМ ГОДА", winner: "Qusti" },
+            { nomination: "ПРОРЫВ ГОДА", winner: "Eozik" }
+        ];
+
+        // ОБНОВЛЕННЫЕ НОМИНАЦИИ И НОМИНАНТЫ
+        const NOMINATIONS = {
+            main: [
+                { 
+                    id: 'flare_king', 
+                    name: 'FLARE KING', 
+                    description: 'Номинация для легенды сервера, настоящего короля и самого лучшего участника этого года.',
+                    nominees: ["Akirakume", "Dony_zq", "Eozik", "Flourin", "Maronnix", "Nodben", "Qusti"]
+                },
+                { 
+                    id: 'game_of_year', 
+                    name: 'ИГРА ГОДА', 
+                    description: 'Настоящий хит этого года, в которую хотелось играть снова и снова.',
+                    nominees: ["Counter-Strike 2", "Garry's Mod", "Marvel's Spider-Man 2", "Among Us", "Roblox"]
+                },
+                { 
+                    id: 'best_cs_player', 
+                    name: 'ЛУЧШИЙ CS-УЧАСТНИК', 
+                    description: 'Участник, который делает только хэдшот, MVP матча и просто сильнейший.',
+                    nominees: ["Akirakume", "Dony_zq", "Eozik", "Maronnix", "Menchik", "Nodben", "Qusti"]
+                },
+                { 
+                    id: 'best_fortnite_player', 
+                    name: 'ЛУЧШИЙ FORTNITE-УЧАСТНИК', 
+                    description: 'Участник, который перед тем как убить, строит небоскрёбы, занимает топ один, и никогда не промахивается с дробаша.',
+                    nominees: ["Akirakume", "Dony_zq", "Flourin", "Izumrudik", "Maronnix"]
+                },
+                { 
+                    id: 'multigaming_of_year', 
+                    name: 'MULTIGAMING ГОДА', 
+                    description: 'Жаждет сыграть во все новинки года, играет почти во всё, имея у себя огромную библиотеку игр в стим.',
+                    nominees: ["Akirakume", "Dony_zq", "Maronnix", "Nodben"]
+                },
+                { 
+                    id: 'meme_person_of_year', 
+                    name: 'ЧЕЛОВЕК-МЕМ ГОДА', 
+                    description: 'Тот, кто любой разговор превращает в коллекцию шуток, его фразы разбежались по всем чатикам, а любое его сообщение сразу становится мемом.',
+                    nominees: ["Akirakume", "Dony_zq", "Eozik", "Flourin", "Izumrudik", "Maronnix", "Nodben", "Qusti"]
+                },
+                { 
+                    id: 'conflict_of_year', 
+                    name: 'КОНФЛИКТ ГОДА', 
+                    description: 'Ничего не предвещало беды, как вдруг появилось оно, самое жаркое и матерное событие в этом году.',
+                    nominees: [
+                        "Akirakume, Eozik, Flourin, Maronnix, Nodben x Fines, Denis_185",
+                        "Akirakume x Flourin", 
+                        "Akirakume x Otmorozik",
+                        "Eozik x Izumrudik"
+                    ]
+                },
+                { 
+                    id: 'breakthrough_of_year', 
+                    name: 'ПРОРЫВ ГОДА', 
+                    description: 'Начинал год как типичный участник сервера, а теперь он общается со всеми и присутствует везде.',
+                    nominees: ["Cloury", "Izumrudik", "Hasan", "Menchik"]
+                }
+            ],
+            additional: [
+                { 
+                    id: 'track_of_year', 
+                    name: 'ТРЕК ГОДА', 
+                    description: 'Номинация для лучшего трека, который засел у многих в голове. Даже жалко что их так мало, а мог бы быть намного больше...',
+                    nominees: [
+                        {name: 'Maronn x Eozik - Лютый гандон', link: 'https://youtu.be/FWrgYyk0Crs?si=93Zeth0-WWiQSWMd'},
+                        {name: 'Maronn x Eozik - Полный провал (feat. Makos)', link: 'https://youtu.be/eyd1afetXvc?si=2l4ckYWmEunNYF4v'}
+                    ],
+                    hasLinks: true
+                },
+                { 
+                    id: 'toxic_of_year', 
+                    name: 'ТОКСИК ГОДА', 
+                    description: 'Номинация самого злого и агрессивного участника этого года.',
+                    nominees: ["Akirakume", "Eozik", "Nodben", "Qusti", "Другое"],
+                    hasOther: true
+                },
+                { 
+                    id: 'duo_of_year', 
+                    name: 'ДУО ГОДА', 
+                    description: 'Легендарное дуо, которое знают абсолютно все, а их совместная игра просто на высоте.',
+                    nominees: ["Akirakume x Menchik", "Dony_zq x Nodben", "Maronnix x Qusti", "Akirakume x Balabol", "Dony_zq x Maronnix"]
+                },
+                { 
+                    id: 'cringe_of_year', 
+                    name: 'КРИНЖ ГОДА', 
+                    description: 'Тот, чьи слова и действия вызывают неловкость, смех сквозь стыд и желание перемотать жизнь на 15 секунд вперёд.',
+                    nominees: ["Cloury", "Flourin", "Izumrudik", "Nodben"]
+                },
+                { 
+                    id: 'freak_of_year', 
+                    name: 'ФРИК ГОДА', 
+                    description: 'Участник, который вытворял полную дичь в этом году.',
+                    nominees: ["Akirakume", "Cloury", "Nodben", "Другое"],
+                    hasOther: true
+                },
+                { 
+                    id: 'event_of_year', 
+                    name: 'СОБЫТИЕ ГОДА', 
+                    description: 'То, что хотели многие или многих это очень поразило.',
+                    nominees: ["Нодбен начал стримить", "У Макоса появился кот", "Игры на CYBERSHOKE", "Костя подстригся налысо", "NJSC - Nodben Joski Server Cup 2025"]
+                },
+                { 
+                    id: 'fail_of_year', 
+                    name: 'ПРОВАЛ ГОДА', 
+                    description: 'То, что получилось ужасно, ведь хотелось по-другому.',
+                    nominees: ["Несостоящаяся встреча Флоурина с Нодбеном", "Макос перестал стримить спустя месяц", "Интернет Нодбена"]
+                },
+                { 
+                    id: 'phrase_of_year', 
+                    name: 'ФРАЗА ГОДА', 
+                    description: 'Самая запоминающаяся фраза от одного из участников в этом году.',
+                    nominees: ['Eozik - Я НЕ ВЕРЮ', 'Maronnix - ты чо дурак?', 'Qusti - 123', 'Qusti - батя твой']
+                },
+                { 
+                    id: 'sos_of_year', 
+                    name: 'С.О.С. ГОДА', 
+                    description: 'Самое ожидаемое событие года, то что ждали все.',
+                    nominees: ["Бета-тест Rematch", "Релиз Marvel's Spider-Man 2", "На сервере появились новые участники", "Выход серии THE FANTASTIC SPIDER-MAN 4 ЭПИЗОД"]
+                }
+            ]
+        };
+
+        // ========== ФУНКЦИЯ ДЛЯ ПРЕДВАРИТЕЛЬНОЙ ЗАГРУЗКИ ИЗОБРАЖЕНИЙ ==========
+        function preloadImages() {
+            console.log('Начинаем предзагрузку изображений...');
+            
+            // Собираем все уникальные URL изображений
+            const imageUrls = new Set();
+            
+            // Добавляем изображение из секции "О премии"
+            imageUrls.add('https://i.postimg.cc/ZqYkxMBw/nodbin-joski-1.png');
+            
+            // Добавляем все изображения номинантов
+            Object.values(AVATAR_IMAGES).forEach(url => imageUrls.add(url));
+            
+            // Добавляем все изображения номинаций
+            Object.values(NOMINATION_IMAGES).forEach(url => imageUrls.add(url));
+            
+            // Преобразуем в массив и предзагружаем
+            const urlsArray = Array.from(imageUrls);
+            console.log(`Предзагружаем ${urlsArray.length} изображений:`, urlsArray);
+            
+            let loadedCount = 0;
+            const totalCount = urlsArray.length;
+            
+            urlsArray.forEach(url => {
+                const img = new Image();
+                img.onload = function() {
+                    loadedCount++;
+                    console.log(`Загружено изображение: ${url} (${loadedCount}/${totalCount})`);
+                    
+                    // Обновляем прогресс в консоли
+                    if (loadedCount === totalCount) {
+                        console.log('✅ Все изображения успешно загружены!');
+                    }
+                };
+                img.onerror = function() {
+                    loadedCount++;
+                    console.warn(`❌ Ошибка загрузки: ${url}`);
+                };
+                img.src = url;
+            });
+        }
+
+        // ========== ТАЙМЕР ДО ОКОНЧАНИЯ ГОЛОСОВАНИЯ ==========
+        function updateTimer() {
+            // Устанавливаем дату окончания голосования: 26 ноября 2025 года, 15:00 по МСК
+            // МСК = UTC+3, поэтому создаем дату в UTC: 26 ноября 2025, 12:00 UTC
+            const endDate = new Date(Date.UTC(2025, 10, 26, 12, 0, 0)); // месяц 10 = ноябрь (0-11)
+            
+            const now = new Date();
+            const diff = endDate - now;
+
+            // Если время истекло
+            if (diff <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                
+                // Показываем сообщение об окончании
+                const timerContainer = document.getElementById('timerContainer');
+                timerContainer.innerHTML = '<div class="timer-ended">ГОЛОСОВАНИЕ ЗАВЕРШЕНО!</div>';
+                
+                // Блокируем голосование
+                disableVoting();
+                return;
+            }
+
+            // Вычисляем оставшееся время
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // Обновляем значения таймера
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // ========== ФУНКЦИИ ДЛЯ РАБОТЫ С ОБЛАЧНЫМ ХРАНИЛИЩЕМ ==========
+        class CloudStorage {
+            constructor() {
+                this.isOnline = true;
+                this.lastSync = null;
+            }
+
+            async saveData(data) {
+                try {
+                    console.log('Сохранение данных в облако:', data);
+                    
+                    // Сохраняем в локальное хранилище как резервную копию
+                    localStorage.setItem('flare_data_backup', JSON.stringify(data));
+                    localStorage.setItem('flare_last_sync', new Date().toISOString());
+                    
+                    // Пытаемся сохранить в облако
+                    if (this.isOnline) {
+                        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Master-Key': JSONBIN_API_KEY,
+                                'X-Bin-Versioning': 'false'
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.lastSync = new Date();
+                            this.updateSyncStatus('Данные синхронизированы с облаком', 'sync-success');
+                            console.log('Успешно сохранено в облако:', result);
+                            return true;
+                        } else {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                    }
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Ошибка сохранения в облако:', error);
+                    this.isOnline = false;
+                    this.updateSyncStatus('Работа в оффлайн-режиме. Данные сохранены локально.', 'sync-error');
+                    return false;
+                }
+            }
+
+            async loadData() {
+                try {
+                    // Пытаемся загрузить из облака
+                    if (this.isOnline) {
+                        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                            headers: {
+                                'X-Master-Key': JSONBIN_API_KEY
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.lastSync = new Date();
+                            this.updateSyncStatus('Данные загружены из облака', 'sync-success');
+                            
+                            console.log('Данные из облака:', result.record);
+                            
+                            // Сохраняем полученные данные в локальное хранилище
+                            if (result.record) {
+                                // Обновляем локальные данные из облака
+                                if (result.record.users) {
+                                    localStorage.setItem('flare_users', JSON.stringify(result.record.users));
+                                }
+                                if (result.record.votes) {
+                                    localStorage.setItem('flare_votes', JSON.stringify(result.record.votes));
+                                }
+                                if (result.record.reports) {
+                                    localStorage.setItem('flare_reports', JSON.stringify(result.record.reports));
+                                }
+                                if (result.record.polls) {
+                                    localStorage.setItem('flare_polls', JSON.stringify(result.record.polls));
+                                }
+                            }
+                            
+                            return result.record;
+                        } else {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Ошибка загрузки из облака:', error);
+                    this.isOnline = false;
+                    
+                    // Загружаем из локального хранилища
+                    const backup = localStorage.getItem('flare_data_backup');
+                    if (backup) {
+                        this.updateSyncStatus('Используются локальные данные (оффлайн)', 'sync-error');
+                        return JSON.parse(backup);
+                    }
+                }
+                
+                // Возвращаем пустые данные, если ничего не найдено
+                return this.getDefaultData();
+            }
+
+            getDefaultData() {
+                return {
+                    users: [],
+                    votes: [],
+                    reports: [],
+                    polls: [],
+                    created: new Date().toISOString()
+                };
+            }
+
+            updateSyncStatus(message, className) {
+                const statusElement = document.getElementById('syncStatus');
+                if (statusElement) {
+                    statusElement.textContent = `🔄 ${message}`;
+                    statusElement.className = `sync-status ${className}`;
+                    
+                    // Автоматически скрываем сообщение об успехе через 3 секунды
+                    if (className === 'sync-success') {
+                        setTimeout(() => {
+                            if (statusElement.textContent.includes(message)) {
+                                statusElement.textContent = '';
+                            }
+                        }, 3000);
+                    }
+                }
+            }
+
+            // Получаем текущие данные из localStorage
+            getCurrentLocalData() {
+                const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
+                const votes = JSON.parse(localStorage.getItem('flare_votes') || '[]');
+                const reports = JSON.parse(localStorage.getItem('flare_reports') || '[]');
+                const polls = JSON.parse(localStorage.getItem('flare_polls') || '[]');
+                
+                console.log('Текущие локальные данные:', { users, votes, reports, polls });
+                
+                return {
+                    users: users,
+                    votes: votes,
+                    reports: reports,
+                    polls: polls,
+                    lastUpdated: new Date().toISOString()
+                };
+            }
+
+            // Периодическая синхронизация
+            startAutoSync() {
+                setInterval(async () => {
+                    if (this.isOnline) {
+                        const currentData = this.getCurrentLocalData();
+                        await this.saveData(currentData);
+                    }
+                }, 30000); // Синхронизация каждые 30 секунд
+            }
+        }
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ==========
+        let cloudStorage;
+        let votingEnabled = true;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('FLARE 2025 - Сайт загружен!');
+            
+            // Инициализируем облачное хранилище
+            cloudStorage = new CloudStorage();
+            
+            // Загружаем данные
+            await loadApplicationData();
+            
+            // Инициализируем приложение
+            initApp();
+            
+            // Запускаем автоматическую синхронизацию
+            cloudStorage.startAutoSync();
+            
+            // Запускаем таймер
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        });
+
+        async function loadApplicationData() {
+            console.log('Загрузка данных приложения...');
+            
+            try {
+                const data = await cloudStorage.loadData();
+                console.log('Данные загружены:', data);
+                
+                // Если данные из облака, обновляем локальное хранилище
+                if (data && data.users) {
+                    localStorage.setItem('flare_users', JSON.stringify(data.users));
+                }
+                if (data && data.votes) {
+                    localStorage.setItem('flare_votes', JSON.stringify(data.votes));
+                }
+                if (data && data.reports) {
+                    localStorage.setItem('flare_reports', JSON.stringify(data.reports));
+                }
+                if (data && data.polls) {
+                    localStorage.setItem('flare_polls', JSON.stringify(data.polls));
+                }
+                
+                console.log('Локальные данные после загрузки:', {
+                    users: JSON.parse(localStorage.getItem('flare_users') || '[]'),
+                    votes: JSON.parse(localStorage.getItem('flare_votes') || '[]'),
+                    reports: JSON.parse(localStorage.getItem('flare_reports') || '[]'),
+                    polls: JSON.parse(localStorage.getItem('flare_polls') || '[]')
+                });
+            } catch (error) {
+                console.error('Ошибка при загрузке данных:', error);
+            }
+        }
+
+        async function saveApplicationData() {
+            const data = cloudStorage.getCurrentLocalData();
+            return await cloudStorage.saveData(data);
+        }
+
+        // ========== ОСНОВНЫЕ ФУНКЦИИ ПРИЛОЖЕНИЯ ==========
+        function initApp() {
+            console.log('Инициализация приложения...');
+            
+            // Проверяем авторизацию
+            checkAuth();
+            
+            // Настраиваем все обработчики событий
+            setupEventListeners();
+            
+            // Инициализируем карусель результатов прошлого года
+            initCarousel();
+            
+            // Начинаем предзагрузку изображений
+            preloadImages();
+            
+            console.log('Приложение инициализировано!');
+        }
+
+        function checkAuth() {
+            console.log('Проверяем авторизацию...');
+            const savedUser = localStorage.getItem('currentUser');
+            console.log('Сохраненный пользователь:', savedUser);
+            
+            if (savedUser) {
+                document.getElementById('authBtn').textContent = savedUser;
+                
+                // Показываем админ-панель для админов
+                const mainNickname = getMainNickname(savedUser);
+                if (ADMIN_USERS.includes(mainNickname)) {
+                    console.log('Обнаружен админ - показываем панель');
+                    document.getElementById('adminMenuContainer').style.display = 'block';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadAdminPanel();
+                } else {
+                    console.log('Обычный пользователь, админ-панель скрыта');
+                }
+            } else {
+                console.log('Пользователь не авторизован');
+            }
+        }
+
+        function setupEventListeners() {
+            console.log('Настраиваем обработчики событий...');
+            
+            // ========== АУТЕНТИФИКАЦИЯ ==========
+            document.getElementById('authBtn').addEventListener('click', function() {
+                console.log('Кнопка входа нажата');
+                document.getElementById('authModal').style.display = 'flex';
+            });
+
+            // Переключение вкладок аутентификации
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Убираем активный класс у всех вкладок
+                    document.querySelectorAll('.auth-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    // Добавляем активный класс текущей вкладке
+                    this.classList.add('active');
+                    
+                    // Скрываем все содержимое вкладок
+                    document.querySelectorAll('.auth-tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Показываем содержимое текущей вкладки
+                    document.getElementById(tabId + 'Tab').classList.add('active');
+                });
+            });
+
+            // Кнопка входа
+            document.getElementById('loginBtn').addEventListener('click', async function() {
+                console.log('Кнопка входа нажата');
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                
+                if (!username || !password) {
+                    alert('Заполните все поля');
+                    return;
+                }
+                
+                // Проверяем существование пользователя
+                const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
+                const mainNickname = getMainNickname(username.toLowerCase());
+                
+                console.log('Поиск пользователя:', username, 'mainNickname:', mainNickname);
+                console.log('Все пользователи:', users);
+                
+                const user = users.find(u => u.mainNickname === mainNickname);
+                
+                if (user && user.password === password) {
+                    // Успешный вход
+                    localStorage.setItem('currentUser', username);
+                    document.getElementById('authBtn').textContent = username;
+                    document.getElementById('authModal').style.display = 'none';
+                    alert('Добро пожаловать, ' + username + '!');
+                    
+                    // Показываем админ-панель если нужно
+                    checkAuth();
+                    
+                    // Очищаем форму
+                    document.getElementById('loginUsername').value = '';
+                    document.getElementById('loginPassword').value = '';
+                } else {
+                    alert('Неверный логин или пароль');
+                    console.log('Ошибка входа: пользователь не найден или пароль неверный');
+                    console.log('Найденный пользователь:', user);
+                }
+            });
+
+            // Кнопка регистрации
+            document.getElementById('registerBtn').addEventListener('click', async function() {
+                console.log('Кнопка регистрации нажата');
+                const username = document.getElementById('registerUsername').value.trim();
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (!username || !password || !confirmPassword) {
+                    alert('Заполните все поля');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    alert('Пароли не совпадают');
+                    return;
+                }
+                
+                // Проверяем, разрешен ли никнейм
+                const mainNickname = getMainNickname(username.toLowerCase());
+                if (!mainNickname) {
+                    alert('Этот никнейм не зарегистрирован в системе. Пожалуйста, используйте ваш настоящий Discord никнейм.');
+                    return;
+                }
+                
+                // Проверяем, не занят ли уже этот аккаунт
+                const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
+                const existingUser = users.find(user => user.mainNickname === mainNickname);
+                if (existingUser) {
+                    alert('Этот аккаунт уже зарегистрирован. Пожалуйста, войдите в систему.');
+                    return;
+                }
+                
+                console.log('Регистрируем пользователя:', username, 'основной ник:', mainNickname);
+                
+                // Создаем нового пользователя
+                const newUser = {
+                    id: 'user_' + Date.now(),
+                    username: username,
+                    mainNickname: mainNickname,
+                    password: password,
+                    registeredAt: new Date().toISOString()
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('flare_users', JSON.stringify(users));
+                localStorage.setItem('currentUser', username);
+                
+                console.log('Пользователь сохранен локально:', newUser);
+                
+                // Сохраняем в облако (асинхронно)
+                cloudStorage.saveData(cloudStorage.getCurrentLocalData()).then(success => {
+                    if (success) {
+                        console.log('Пользователь синхронизирован с облаком');
+                    } else {
+                        console.log('Пользователь сохранен локально (оффлайн режим)');
+                    }
+                });
+                
+                document.getElementById('authBtn').textContent = username;
+                document.getElementById('authModal').style.display = 'none';
+                alert('Добро пожаловать, ' + username + '! Регистрация успешна.');
+                
+                // Показываем админ-панель если нужно
+                checkAuth();
+                
+                // Очищаем форму
+                document.getElementById('registerUsername').value = '';
+                document.getElementById('registerPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+            });
+
+            // ========== ГОЛОСОВАНИЕ ==========
+            const voteButtons = [
+                'voteMainBtn', 'voteAdditionalBtn', 'voteMainBtn2', 'voteAdditionalBtn2'
+            ];
+            
+            voteButtons.forEach(buttonId => {
+                document.getElementById(buttonId).addEventListener('click', function() {
+                    console.log('Кнопка голосования нажата:', buttonId);
+                    
+                    if (!votingEnabled) {
+                        alert('Голосование завершено! Вы больше не можете голосовать или изменять свои голоса.');
+                        return;
+                    }
+                    
+                    const category = buttonId.includes('Main') ? 'main' : 'additional';
+                    openVotingModal(category);
+                });
+            });
+
+            document.getElementById('backToNominationsBtn').addEventListener('click', function() {
+                console.log('Назад к номинациям');
+                document.getElementById('nomineeModal').style.display = 'none';
+                document.getElementById('nominationModal').style.display = 'flex';
+            });
+
+            document.getElementById('confirmVoteBtn').addEventListener('click', async function() {
+                console.log('Подтверждение голоса');
+                await confirmVote();
+            });
+
+            // ========== ПЛАВНАЯ ПРОКРУТКА К НОМИНАЦИЯМ ==========
+            document.getElementById('voteMainBtn').addEventListener('click', function() {
+                document.getElementById('nominations').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+
+            document.getElementById('voteAdditionalBtn').addEventListener('click', function() {
+                document.getElementById('nominations').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+
+            // ========== АДМИН-ПАНЕЛЬ ==========
+            document.getElementById('adminMenuBtn').addEventListener('click', function(e) {
+                console.log('Кнопка админ-панели нажата');
+                e.stopPropagation();
+                document.getElementById('adminDropdown').classList.toggle('show');
+            });
+
+            document.addEventListener('click', function() {
+                document.getElementById('adminDropdown').classList.remove('show');
+            });
+
+            document.getElementById('viewResultsBtn').addEventListener('click', function() {
+                console.log('Просмотр результатов');
+                loadAdminResults();
+            });
+            
+            document.getElementById('viewStatsBtn').addEventListener('click', function() {
+                console.log('Просмотр статистики');
+                loadAdminStats();
+            });
+
+            document.getElementById('viewReportsBtn').addEventListener('click', function() {
+                console.log('Просмотр репортов');
+                loadAdminReports();
+            });
+
+            document.getElementById('exportResults').addEventListener('click', function() {
+                exportDataToJSON();
+            });
+
+            document.getElementById('forceSyncBtn').addEventListener('click', async function() {
+                const success = await cloudStorage.saveData(cloudStorage.getCurrentLocalData());
+                if (success) {
+                    alert('Данные синхронизированы с облаком!');
+                } else {
+                    alert('Ошибка синхронизации. Проверьте подключение к интернету.');
+                }
+            });
+
+            // ========== FAQ И РЕПОРТЫ ==========
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', function() {
+                    this.parentElement.classList.toggle('active');
+                });
+            });
+
+            document.getElementById('reportLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('reportModal').style.display = 'flex';
+            });
+
+            document.getElementById('submitReport').addEventListener('click', async function() {
+                const nickname = document.getElementById('reportNickname').value;
+                const description = document.getElementById('reportDescription').value;
+                
+                if (nickname && description) {
+                    // Сохраняем репорт
+                    const reports = JSON.parse(localStorage.getItem('flare_reports') || '[]');
+                    reports.push({
+                        nickname: nickname,
+                        reason: document.getElementById('reportReason').value,
+                        description: description,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    localStorage.setItem('flare_reports', JSON.stringify(reports));
+                    
+                    // Сохраняем в облако
+                    cloudStorage.saveData(cloudStorage.getCurrentLocalData()).then(success => {
+                        if (success) {
+                            console.log('Репорт синхронизирован с облаком');
+                        }
+                    });
+                    
+                    alert('Спасибо за ваш репорт!');
+                    document.getElementById('reportModal').style.display = 'none';
+                    
+                    // Очищаем форму
+                    document.getElementById('reportNickname').value = '';
+                    document.getElementById('reportReason').value = '';
+                    document.getElementById('reportDescription').value = '';
+                } else {
+                    alert('Пожалуйста, заполните все поля');
+                }
+            });
+
+            // ========== ОПРОС ==========
+            document.getElementById('pollButton').addEventListener('click', function() {
+                document.getElementById('pollModal').style.display = 'flex';
+            });
+
+            document.getElementById('submitPoll').addEventListener('click', async function() {
+                const question1 = document.getElementById('pollQuestion1').value;
+                const question2 = document.getElementById('pollQuestion2').value;
+                const question3 = document.getElementById('pollQuestion3').value;
+                const question4 = document.getElementById('pollQuestion4').value;
+                
+                if (question1 && question2 && question3 && question4) {
+                    // Сохраняем опрос
+                    const polls = JSON.parse(localStorage.getItem('flare_polls') || '[]');
+                    const currentUser = localStorage.getItem('currentUser');
+                    
+                    polls.push({
+                        user: currentUser || 'Аноним',
+                        question1: question1,
+                        question2: question2,
+                        question3: question3,
+                        question4: question4,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    localStorage.setItem('flare_polls', JSON.stringify(polls));
+                    
+                    // Сохраняем в облако
+                    cloudStorage.saveData(cloudStorage.getCurrentLocalData()).then(success => {
+                        if (success) {
+                            console.log('Опрос синхронизирован с облаком');
+                        }
+                    });
+                    
+                    alert('Спасибо за ваши ответы! Ваше мнение поможет сделать FLARE еще лучше!');
+                    document.getElementById('pollModal').style.display = 'none';
+                    
+                    // Очищаем форму
+                    document.getElementById('pollQuestion1').value = '';
+                    document.getElementById('pollQuestion2').value = '';
+                    document.getElementById('pollQuestion3').value = '';
+                    document.getElementById('pollQuestion4').value = '';
+                } else {
+                    alert('Пожалуйста, ответьте на все вопросы');
+                }
+            });
+
+            // ========== ЗАКРЫТИЕ МОДАЛЬНЫХ ОКОН ==========
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+
+            // ========== АНИМАЦИЯ СКРОЛЛА ==========
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('mainHeader');
+                const hero = document.getElementById('heroSection');
+                const scrollTop = window.pageYOffset;
+                
+                if (scrollTop > 100) {
+                    header.classList.add('scrolled');
+                    hero.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                    hero.classList.remove('scrolled');
+                }
+            });
+
+            console.log('Все обработчики настроены!');
+        }
+
+        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
+        function getMainNickname(nickname) {
+            const lowerNickname = nickname.toLowerCase();
+            for (const [mainNick, variations] of Object.entries(ALLOWED_NICKNAMES)) {
+                if (variations.map(v => v.toLowerCase()).includes(lowerNickname)) {
+                    return mainNick;
+                }
+            }
+            return null;
+        }
+
+        function getUserVotes() {
+            try {
+                const votesJSON = localStorage.getItem('flare_votes');
+                return votesJSON ? JSON.parse(votesJSON) : [];
+            } catch (error) {
+                console.error('Ошибка при получении голосов:', error);
+                return [];
+            }
+        }
+
+        async function saveVote(user, category, nominationId, nominee) {
+            try {
+                console.log('Сохранение голоса...', { user, category, nominationId, nominee });
+                
+                const votes = getUserVotes();
+                const mainNickname = getMainNickname(user);
+                
+                if (!mainNickname) {
+                    alert('Ошибка: ваш никнейм не распознан в системе');
+                    return false;
+                }
+                
+                // Ищем существующий голос пользователя в этой номинации
+                const existingVoteIndex = votes.findIndex(vote => 
+                    getMainNickname(vote.user) === mainNickname && 
+                    vote.category === category && 
+                    vote.nomination === nominationId
+                );
+                
+                const vote = {
+                    user: user,
+                    mainNickname: mainNickname,
+                    category: category,
+                    nomination: nominationId,
+                    nominee: nominee,
+                    timestamp: new Date().toISOString()
+                };
+                
+                if (existingVoteIndex !== -1) {
+                    votes[existingVoteIndex] = vote;
+                    console.log('Обновлен существующий голос');
+                } else {
+                    votes.push(vote);
+                    console.log('Добавлен новый голос');
+                }
+                
+                localStorage.setItem('flare_votes', JSON.stringify(votes));
+                console.log('Голос сохранен в localStorage:', vote);
+                
+                // Сохраняем в облако (асинхронно, не ждем завершения)
+                cloudStorage.saveData(cloudStorage.getCurrentLocalData()).then(success => {
+                    if (success) {
+                        console.log('Голос синхронизирован с облаком');
+                    } else {
+                        console.log('Голос сохранен локально (оффлайн режим)');
+                    }
+                });
+                
+                return true;
+            } catch (error) {
+                console.error('Ошибка при сохранении голоса:', error);
+                alert('Ошибка при сохранении голоса. Попробуйте еще раз.');
+                return false;
+            }
+        }
+
+        // ========== ФУНКЦИИ ГОЛОСОВАНИЯ ==========
+        let currentCategory = null;
+        let currentNomination = null;
+        let selectedOtherValue = '';
+
+        function openVotingModal(category) {
+            console.log('Открываем модальное окно голосования для категории:', category);
+            
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Пожалуйста, войдите в систему для голосования');
+                document.getElementById('authModal').style.display = 'flex';
+                return;
+            }
+            
+            currentCategory = category;
+            
+            document.getElementById('nominationModalTitle').textContent = 
+                category === 'main' ? 'Основные номинации' : 'Дополнительные номинации';
+            
+            loadNominations(category);
+            document.getElementById('nominationModal').style.display = 'flex';
+        }
+
+        function loadNominations(category) {
+            console.log('Загружаем номинации для категории:', category);
+            
+            const nominations = NOMINATIONS[category];
+            const grid = document.getElementById('nominationsGrid');
+            grid.innerHTML = '';
+            
+            nominations.forEach(nomination => {
+                const card = document.createElement('div');
+                card.className = 'nomination-card';
+                
+                const userVotes = getUserVotes();
+                const currentUser = localStorage.getItem('currentUser');
+                const mainNickname = getMainNickname(currentUser);
+                const userVote = userVotes.find(vote => 
+                    getMainNickname(vote.user) === mainNickname && 
+                    vote.nomination === nomination.id && 
+                    vote.category === category
+                );
+                
+                const statusText = userVote ? 
+                    `Вы уже голосовали: ${userVote.nominee}` : 
+                    'Нажмите для выбора';
+                
+                // Получаем URL изображения для номинации
+                const nominationImage = NOMINATION_IMAGES[nomination.id] || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
+                
+                card.innerHTML = `
+                    <img class="nomination-card-image" src="${nominationImage}" alt="${nomination.name}">
+                    <h3 class="nomination-card-title">${nomination.name}</h3>
+                    <p class="nomination-card-description">${nomination.description}</p>
+                    <div class="nomination-card-status">${statusText}</div>
+                `;
+                
+                card.addEventListener('click', function() {
+                    console.log('Выбрана номинация:', nomination.name);
+                    openNomineeModal(nomination);
+                });
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function openNomineeModal(nomination) {
+            console.log('Открываем модальное окно номинантов для:', nomination.name);
+            
+            currentNomination = nomination;
+            document.getElementById('nomineeModalTitle').textContent = nomination.name;
+            document.getElementById('nominationDescription').textContent = nomination.description;
+            
+            loadNominees();
+            document.getElementById('nominationModal').style.display = 'none';
+            document.getElementById('nomineeModal').style.display = 'flex';
+        }
+
+        function loadNominees() {
+            console.log('Загружаем список номинантов');
+            
+            const grid = document.getElementById('nomineesGrid');
+            grid.innerHTML = '';
+            document.getElementById('confirmVoteBtn').disabled = true;
+            selectedOtherValue = '';
+            
+            // Удаляем предыдущее поле ввода "Другое", если оно было
+            const existingOtherInput = document.querySelector('.other-input-container');
+            if (existingOtherInput) {
+                existingOtherInput.remove();
+            }
+            
+            const userVotes = getUserVotes();
+            const currentUser = localStorage.getItem('currentUser');
+            const mainNickname = getMainNickname(currentUser);
+            const currentVote = userVotes.find(vote => 
+                getMainNickname(vote.user) === mainNickname && 
+                vote.nomination === currentNomination.id && 
+                vote.category === currentCategory
+            );
+            
+            // Обрабатываем номинантов в зависимости от типа
+            if (currentNomination.hasLinks) {
+                // Для треков с ссылками
+                currentNomination.nominees.forEach(nominee => {
+                    const card = document.createElement('div');
+                    card.className = 'nominee-card';
+                    
+                    if (currentVote && currentVote.nominee === nominee.name) {
+                        card.classList.add('selected');
+                        document.getElementById('confirmVoteBtn').disabled = false;
+                    }
+                    
+                    card.innerHTML = `
+                        <a href="${nominee.link}" target="_blank" class="track-link">${nominee.name}</a>
+                    `;
+                    
+                    card.addEventListener('click', function(e) {
+                        if (e.target.tagName === 'A') return; // Не выбираем при клике на ссылку
+                        
+                        console.log('Выбран номинант:', nominee.name);
+                        document.querySelectorAll('.nominee-card').forEach(c => {
+                            c.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        document.getElementById('confirmVoteBtn').disabled = false;
+                    });
+                    
+                    grid.appendChild(card);
+                });
+            } else {
+                // Обычные номинанты
+                currentNomination.nominees.forEach(nominee => {
+                    const card = document.createElement('div');
+                    card.className = 'nominee-card';
+                    
+                    if (currentVote && currentVote.nominee === nominee) {
+                        card.classList.add('selected');
+                        document.getElementById('confirmVoteBtn').disabled = false;
+                    }
+                    
+                    // Получаем URL изображения для номинанта
+                    const avatarUrl = AVATAR_IMAGES[nominee] || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&h=720&q=80';
+                    
+                    card.innerHTML = `
+                        <img class="nominee-image" src="${avatarUrl}" alt="${nominee}">
+                        <div class="nominee-name">${nominee}</div>
+                    `;
+                    
+                    card.addEventListener('click', function() {
+                        console.log('Выбран номинант:', nominee);
+                        document.querySelectorAll('.nominee-card').forEach(c => {
+                            c.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        document.getElementById('confirmVoteBtn').disabled = false;
+                        
+                        // Если выбран "Другое", показываем поле ввода
+                        if (currentNomination.hasOther && nominee === 'Другое') {
+                            showOtherInput();
+                        } else {
+                            hideOtherInput();
+                        }
+                    });
+                    
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        function showOtherInput() {
+            // Удаляем предыдущее поле ввода, если оно было
+            const existingOtherInput = document.querySelector('.other-input-container');
+            if (existingOtherInput) {
+                existingOtherInput.remove();
+            }
+            
+            const otherInputContainer = document.createElement('div');
+            otherInputContainer.className = 'other-input-container';
+            otherInputContainer.innerHTML = `
+                <input type="text" class="other-input" id="otherInput" placeholder="Введите ник участника или событие...">
+            `;
+            
+            document.getElementById('nomineesGrid').appendChild(otherInputContainer);
+            document.querySelector('.other-input-container').style.display = 'block';
+            
+            // Добавляем обработчик изменения поля ввода
+            document.getElementById('otherInput').addEventListener('input', function() {
+                selectedOtherValue = this.value.trim();
+                document.getElementById('confirmVoteBtn').disabled = !selectedOtherValue;
+            });
+        }
+
+        function hideOtherInput() {
+            const otherInputContainer = document.querySelector('.other-input-container');
+            if (otherInputContainer) {
+                otherInputContainer.style.display = 'none';
+                selectedOtherValue = '';
+            }
+        }
+
+        async function confirmVote() {
+            console.log('Подтверждаем голосование...');
+            
+            const selectedCard = document.querySelector('.nominee-card.selected');
+            if (!selectedCard) {
+                alert('Пожалуйста, выберите номинанта');
+                return;
+            }
+
+            let nomineeName;
+            
+            if (currentNomination.hasLinks) {
+                // Для треков берем текст ссылки
+                nomineeName = selectedCard.querySelector('.track-link').textContent;
+            } else if (currentNomination.hasOther && selectedCard.querySelector('.nominee-name').textContent === 'Другое') {
+                // Для "Другое" берем значение из поля ввода
+                if (!selectedOtherValue) {
+                    alert('Пожалуйста, введите значение для "Другое"');
+                    return;
+                }
+                nomineeName = `Другое: ${selectedOtherValue}`;
+            } else {
+                // Обычный номинант
+                nomineeName = selectedCard.querySelector('.nominee-name').textContent;
+            }
+            
+            const userName = localStorage.getItem('currentUser');
+            
+            // НЕМЕДЛЕННО показываем сообщение и закрываем модальное окно
+            alert('Ваш голос за ' + nomineeName + ' в номинации "' + currentNomination.name + '" сохранен!');
+            document.getElementById('nomineeModal').style.display = 'none';
+            
+            // Сохраняем голос в фоне (не ждем завершения)
+            saveVote(userName, currentCategory, currentNomination.id, nomineeName).then(success => {
+                if (!success) {
+                    console.error('Не удалось сохранить голос');
+                }
+            });
+        }
+
+        // ========== КАРУСЕЛЬ РЕЗУЛЬТАТОВ ПРОШЛОГО ГОДА ==========
+        let currentSlide = 0;
+
+        function initCarousel() {
+            const carouselTrack = document.getElementById('carouselTrack');
+            const carouselDots = document.getElementById('carouselDots');
+            
+            // Создаем слайды
+            PREVIOUS_RESULTS.forEach((result, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `
+                    <h3 class="carousel-title">${result.nomination}</h3>
+                    <div class="carousel-winner">${result.winner}</div>
+                    <div class="carousel-year">Победитель</div>
+                `;
+                carouselTrack.appendChild(slide);
+                
+                // Создаем точки для навигации
+                const dot = document.createElement('div');
+                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => goToSlide(index));
+                carouselDots.appendChild(dot);
+            });
+            
+            // Настраиваем обработчики для кнопок навигации
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                goToSlide(currentSlide - 1);
+            });
+            
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                goToSlide(currentSlide + 1);
+            });
+        }
+
+        function goToSlide(slideIndex) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const track = document.getElementById('carouselTrack');
+            
+            // Обеспечиваем циклическую навигацию
+            if (slideIndex < 0) {
+                slideIndex = slides.length - 1;
+            } else if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+            
+            // Обновляем позицию карусели
+            track.style.transform = `translateX(-${slideIndex * 100}%)`;
+            
+            // Обновляем активную точку
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === slideIndex);
+            });
+            
+            currentSlide = slideIndex;
+        }
+
+        // ========== БЛОКИРОВКА ГОЛОСОВАНИЯ ==========
+        function disableVoting() {
+            votingEnabled = false;
+            
+            // Добавляем класс disabled к кнопкам голосования
+            const voteButtons = document.querySelectorAll('#voteMainBtn, #voteAdditionalBtn, #voteMainBtn2, #voteAdditionalBtn2');
+            voteButtons.forEach(button => {
+                button.classList.add('voting-disabled');
+            });
+            
+            // Добавляем сообщение о завершении голосования
+            const nominationsSection = document.getElementById('nominations');
+            const message = document.createElement('div');
+            message.className = 'voting-disabled-message';
+            message.textContent = 'Голосование завершено! Вы больше не можете голосовать или изменять свои голоса.';
+            nominationsSection.appendChild(message);
+        }
+
+        // ========== АДМИН-ФУНКЦИИ ==========
+        function loadAdminPanel() {
+            loadAdminResults();
+            loadAdminStats();
+            loadAdminReports();
+        }
+
+        function loadAdminResults() {
+            const votes = getUserVotes();
+            const resultsGrid = document.getElementById('adminResults');
+            resultsGrid.innerHTML = '';
+            
+            // Группируем голоса по номинациям
+            const results = {};
+            
+            votes.forEach(vote => {
+                const key = `${vote.category}_${vote.nomination}`;
+                if (!results[key]) {
+                    results[key] = {
+                        nomination: vote.nomination,
+                        category: vote.category,
+                        nominees: {}
+                    };
+                }
+                if (!results[key].nominees[vote.nominee]) {
+                    results[key].nominees[vote.nominee] = 0;
+                }
+                results[key].nominees[vote.nominee]++;
+            });
+            
+            // Создаем карточки результатов
+            Object.values(results).forEach(result => {
+                const categoryName = result.category === 'main' ? 'Основные' : 'Дополнительные';
+                const nominationName = NOMINATIONS[result.category].find(n => n.id === result.nomination)?.name || result.nomination;
+                
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                
+                let resultsHTML = `<div class="result-title">${categoryName} - ${nominationName}</div>`;
+                
+                // Сортируем по количеству голосов
+                const sortedNominees = Object.entries(result.nominees)
+                    .sort((a, b) => b[1] - a[1]);
+                
+                sortedNominees.forEach(([nominee, count], index) => {
+                    const isWinner = index === 0;
+                    const winnerClass = isWinner ? 'winner' : '';
+                    resultsHTML += `
+                        <div class="result-item ${winnerClass}">
+                            <span>${nominee}</span>
+                            <span>${count} голосов</span>
+                        </div>
+                    `;
+                });
+                
+                card.innerHTML = resultsHTML;
+                resultsGrid.appendChild(card);
+            });
+        }
+
+        function loadAdminStats() {
+            const votes = getUserVotes();
+            const users = JSON.parse(localStorage.getItem('flare_users') || '[]');
+            const reports = JSON.parse(localStorage.getItem('flare_reports') || '[]');
+            const polls = JSON.parse(localStorage.getItem('flare_polls') || '[]');
+            
+            const totalVotes = votes.length;
+            const uniqueVoters = [...new Set(votes.map(vote => getMainNickname(vote.user)))].length;
+            const totalUsers = users.length;
+            const totalReports = reports.length;
+            const totalPolls = polls.length;
+            
+            const mainVotes = votes.filter(vote => vote.category === 'main').length;
+            const additionalVotes = votes.filter(vote => vote.category === 'additional').length;
+            
+            const statsHTML = `
+                <div class="result-item"><span>Всего зарегистрированных пользователей:</span><span>${totalUsers}</span></div>
+                <div class="result-item"><span>Всего проголосовавших:</span><span>${uniqueVoters}</span></div>
+                <div class="result-item"><span>Всего голосов:</span><span>${totalVotes}</span></div>
+                <div class="result-item"><span>Голосов в основных номинациях:</span><span>${mainVotes}</span></div>
+                <div class="result-item"><span>Голосов в дополнительных номинациях:</span><span>${additionalVotes}</span></div>
+                <div class="result-item"><span>Всего репортов:</span><span>${totalReports}</span></div>
+                <div class="result-item"><span>Всего ответов в опросе:</span><span>${totalPolls}</span></div>
+            `;
+            
+            document.getElementById('adminStats').innerHTML = statsHTML;
+            document.getElementById('reportsCount').textContent = totalReports;
+        }
+
+        function loadAdminReports() {
+            const reports = JSON.parse(localStorage.getItem('flare_reports') || '[]');
+            const reportsContainer = document.getElementById('adminReports');
+            reportsContainer.innerHTML = '';
+            
+            if (reports.length === 0) {
+                reportsContainer.innerHTML = '<p>Репортов пока нет</p>';
+                return;
+            }
+            
+            reports.forEach(report => {
+                const reportItem = document.createElement('div');
+                reportItem.className = 'report-item';
+                
+                reportItem.innerHTML = `
+                    <div class="report-header">
+                        <span class="report-nickname">${report.nickname}</span>
+                        <span class="report-reason">${report.reason}</span>
+                    </div>
+                    <div class="report-description">${report.description}</div>
+                    <div class="report-time" style="font-size: 0.8rem; color: var(--gray); margin-top: 0.5rem;">
+                        ${new Date(report.timestamp).toLocaleString('ru-RU')}
+                    </div>
+                `;
+                
+                reportsContainer.appendChild(reportItem);
+            });
+        }
+
+        function exportDataToJSON() {
+            const data = cloudStorage.getCurrentLocalData();
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `flare_voting_data_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            alert('Данные успешно экспортированы в JSON файл!');
+        }
+
+        console.log('FLARE 2025 с кастомным скроллбаром и уникальными изображениями для номинаций готов к работе!');
+    </script>
+</body>
+</html>
